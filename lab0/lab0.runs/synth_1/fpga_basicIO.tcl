@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "C:/Users/admin/Desktop/psd/lab0/lab0.runs/synth_1/circuito.tcl"
+  variable script "C:/Users/admin/Desktop/psd/lab0/lab0.runs/synth_1/fpga_basicIO.tcl"
   variable category "vivado_synth"
 }
 
@@ -85,9 +85,13 @@ set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_vhdl -library xil_defaultlib {
+  C:/Users/admin/Desktop/psd/lab0/lab0.srcs/sources_1/imports/lab0Files/circuito.vhd
+  C:/Users/admin/Desktop/psd/lab0/lab0.srcs/sources_1/imports/3rd/clkdiv.vhd
   C:/Users/admin/Desktop/psd/lab0/lab0.srcs/sources_1/imports/lab0Files/control.vhd
   C:/Users/admin/Desktop/psd/lab0/lab0.srcs/sources_1/new/datapath.vhd
-  C:/Users/admin/Desktop/psd/lab0/lab0.srcs/sources_1/imports/lab0Files/circuito.vhd
+  C:/Users/admin/Desktop/psd/lab0/lab0.srcs/sources_1/imports/3rd/disp7.vhd
+  C:/Users/admin/Desktop/psd/lab0/lab0.srcs/sources_1/imports/3rd/hex2disp.vhd
+  C:/Users/admin/Desktop/psd/lab0/lab0.srcs/sources_1/imports/3rd/fpga_basicIO.vhd
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -98,21 +102,24 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
+read_xdc C:/Users/admin/Desktop/psd/lab0/lab0.srcs/constrs_1/imports/3rd/Basys3_Master.xdc
+set_property used_in_implementation false [get_files C:/Users/admin/Desktop/psd/lab0/lab0.srcs/constrs_1/imports/3rd/Basys3_Master.xdc]
+
 set_param ips.enableIPCacheLiteLoad 1
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }
-synth_design -top circuito -part xc7a35tcpg236-1
+synth_design -top fpga_basicIO -part xc7a35tcpg236-1
 OPTRACE "synth_design" END { }
 
 
 OPTRACE "write_checkpoint" START { CHECKPOINT }
 # disable binary constraint mode for synth run checkpoints
 set_param constraints.enableBinaryConstraints false
-write_checkpoint -force -noxdef circuito.dcp
+write_checkpoint -force -noxdef fpga_basicIO.dcp
 OPTRACE "write_checkpoint" END { }
 OPTRACE "synth reports" START { REPORT }
-create_report "synth_1_synth_report_utilization_0" "report_utilization -file circuito_utilization_synth.rpt -pb circuito_utilization_synth.pb"
+create_report "synth_1_synth_report_utilization_0" "report_utilization -file fpga_basicIO_utilization_synth.rpt -pb fpga_basicIO_utilization_synth.pb"
 OPTRACE "synth reports" END { }
 file delete __synthesis_is_running__
 close [open __synthesis_is_complete__ w]
