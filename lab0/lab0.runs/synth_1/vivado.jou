@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2020.1 (64-bit)
+# SW Build 2902540 on Wed May 27 19:54:49 MDT 2020
+# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+# Start of session at: Fri Oct  2 14:12:17 2020
+# Process ID: 10156
+# Current directory: C:/Users/admin/Desktop/psd/lab0/lab0.runs/synth_1
+# Command line: vivado.exe -log circuito.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source circuito.tcl
+# Log file: C:/Users/admin/Desktop/psd/lab0/lab0.runs/synth_1/circuito.vds
+# Journal file: C:/Users/admin/Desktop/psd/lab0/lab0.runs/synth_1\vivado.jou
+#-----------------------------------------------------------
+source circuito.tcl -notrace
