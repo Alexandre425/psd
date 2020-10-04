@@ -1,27 +1,19 @@
 #-----------------------------------------------------------
-# Vivado v2020.1 (64-bit)
-# SW Build 2902540 on Wed May 27 19:54:49 MDT 2020
-# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
-# Start of session at: Sun Oct  4 17:29:09 2020
-# Process ID: 11876
-# Current directory: C:/Users/admin/Desktop/psd/lab1
-# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent10888 C:\Users\admin\Desktop\psd\lab1\project_L1.xpr
-# Log file: C:/Users/admin/Desktop/psd/lab1/vivado.log
-# Journal file: C:/Users/admin/Desktop/psd/lab1\vivado.jou
+# Vivado v2020.1.1 (64-bit)
+# SW Build 2960000 on Wed Aug  5 22:57:20 MDT 2020
+# IP Build 2956692 on Thu Aug  6 01:41:30 MDT 2020
+# Start of session at: Sun Oct  4 20:50:25 2020
+# Process ID: 5692
+# Current directory: D:/IST/2020-2021_1S/PSD/Labs/lab_rep/lab1
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent16084 D:\IST\2020-2021_1S\PSD\Labs\lab_rep\lab1\project_L1.xpr
+# Log file: D:/IST/2020-2021_1S/PSD/Labs/lab_rep/lab1/vivado.log
+# Journal file: D:/IST/2020-2021_1S/PSD/Labs/lab_rep/lab1\vivado.jou
 #-----------------------------------------------------------
 start_gui
-open_project C:/Users/admin/Desktop/psd/lab1/project_L1.xpr
+open_project D:/IST/2020-2021_1S/PSD/Labs/lab_rep/lab1/project_L1.xpr
 update_compile_order -fileset sources_1
-close_project
-open_project C:/Users/admin/Desktop/psd/lab0/lab0.xpr
-update_compile_order -fileset sources_1
-close_project
-open_project C:/Users/admin/Desktop/psd/lab1/project_L1.xpr
-update_compile_order -fileset sources_1
-add_files -fileset constrs_1 -norecurse C:/Users/admin/Desktop/psd/lab0/3rd/Basys3_Master.xdc
-import_files -fileset constrs_1 C:/Users/admin/Desktop/psd/lab0/3rd/Basys3_Master.xdc
-close [ open C:/Users/admin/Desktop/psd/lab1/project_L1.srcs/sources_1/new/alu.vhd w ]
-add_files C:/Users/admin/Desktop/psd/lab1/project_L1.srcs/sources_1/new/alu.vhd
+close [ open D:/IST/2020-2021_1S/PSD/Labs/lab_rep/lab1/project_L1.srcs/sources_1/new/register.vhd w ]
+add_files D:/IST/2020-2021_1S/PSD/Labs/lab_rep/lab1/project_L1.srcs/sources_1/new/register.vhd
 update_compile_order -fileset sources_1
 close [ open C:/Users/admin/Desktop/psd/lab1/project_L1.srcs/sources_1/new/common.vhd w ]
 add_files C:/Users/admin/Desktop/psd/lab1/project_L1.srcs/sources_1/new/common.vhd
