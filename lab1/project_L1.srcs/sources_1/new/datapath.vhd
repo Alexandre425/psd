@@ -3,17 +3,17 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity datapath is
- port ( ent : in std_logic_vector (7 downto 0); --Dados de entrada
-        slct : in std_logic_vector (1 downto 0); --Seleção da operação a realizar na ALU
+    port( 
+        ent : in std_logic_vector (7 downto 0);     --Dados de entrada
+        slct : in std_logic_vector (1 downto 0);    --Seleção da operação a realizar na ALU
         clk,rst: in std_logic; --Clock e reset
         ent_out, res : out std_logic_vector (7 downto 0) --Dados de entrada e saída do registo 2, ambos sinais a representar no display de 7 segmentos; Saída do registo 2 
-       ); 
+        ); 
 end datapath;
 
 architecture behavioral of datapath is
- signal unsg_add, unsg_multip : unsigned(7 downto 0); -- Sinais das duas operações aritméticas em representação sem sinal
- signal logic_or, rtr , res_alu, reg1, reg2 : std_logic_vector (7 downto 0); -- Sinais que resultam das operações : Or e rotate right; Resultado da ALU; Saídas dos registos
-
+    signal unsg_add, unsg_multip : unsigned(7 downto 0); -- Sinais das duas operações aritméticas em representação sem sinal
+    signal logic_or, rtr , res_alu, reg1, reg2 : std_logic_vector (7 downto 0); -- Sinais que resultam das operações : Or e rotate right; Resultado da ALU; Saídas dos registos
 begin
  
 -- ALU
@@ -36,7 +36,7 @@ begin
         reg1 <= ent;
         reg2 <= res_alu;
     end if;
-  end process;
+end process;
   
 res <= reg2;
 ent_out <= ent;  

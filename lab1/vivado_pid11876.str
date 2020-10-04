@@ -100,3 +100,336 @@ Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 // WARNING: HEventQueue.dispatchEvent() is taking  8702 ms.
 // WARNING: HEventQueue.dispatchEvent() is taking  1132 ms.
 // Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2020.1/data/ip'. 
+// Tcl Message: open_project: Time (s): cpu = 00:00:29 ; elapsed = 00:00:18 . Memory (MB): peak = 1015.668 ; gain = 0.000 
+// Project name: project_L1; location: C:/Users/admin/Desktop/psd/lab1; part: xc7a35tcpg236-1
+dismissDialog("Open Project"); // bz (cs)
+// a (cs): Critical Messages: addNotify
+// Tcl Command: 'rdi::info_commands {device::*}'
+// Tcl Command: 'rdi::info_commands {debug::*}'
+// Tcl Command: 'rdi::info_commands {*}'
+// WARNING: HEventQueue.dispatchEvent() is taking  1063 ms.
+// Tcl Message: update_compile_order -fileset sources_1 
+// Elapsed time: 90 seconds
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (a)
+dismissDialog("Critical Messages"); // a (cs)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 2); // B (F, cs)
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 2); // B (F, cs)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 2); // B (F, cs)
+// PAPropertyPanels.initPanels (constrs_1) elapsed time: 0.3s
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1]", 3, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1]", 3, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1]", 3, false, false, false, false, false, true); // B (F, cs) - Double Click
+// [GUI Memory]: 114 MB (+558kb) [00:02:24]
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1]", 3, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1]", 3, false, false, false, false, false, true); // B (F, cs) - Double Click
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 2, true); // B (F, cs) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1]", 3, false); // B (F, cs)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd)]", 1); // B (F, cs)
+// [GUI Memory]: 124 MB (+4617kb) [00:02:31]
+// PAPropertyPanels.initPanels (control.vhd) elapsed time: 0.3s
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd), inst_control : control(behavioral) (control.vhd)]", 2, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd), inst_datapath : datapath(behavioral) (datapath.vhd)]", 3, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd), inst_control : control(behavioral) (control.vhd)]", 2, false); // B (F, cs)
+// Elapsed time: 13 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // af (cs)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // af (cs)
+selectMenu(PAResourceItoN.MainMenuMgr_OPEN_RECENT_PROJECT, "Open Recent"); // af (cs)
+selectMenuItem(PAResourceItoN.MainMenuMgr_OPEN_RECENT_PROJECT, "C:/Users/admin/Desktop/psd/lab0/lab0.xpr"); // ai (cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // aa (q, cs)
+// TclEventType: PROJECT_CLOSE
+// HMemoryUtils.trashcanNow. Engine heap size: 998 MB. GUI used memory: 67 MB. Current time: 10/4/20, 5:32:27 PM BST
+// Opening Vivado Project: C:/Users/admin/Desktop/psd/lab0/lab0.xpr. Version: Vivado v2020.1 
+// bz (cs):  Open Project : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1167 ms.
+selectButton("OptionPane.button", "Yes"); // JButton (v, B)
+// Tcl Message: close_project 
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// Tcl Message: open_project C:/Users/admin/Desktop/psd/lab0/lab0.xpr 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified 
+// TclEventType: PROJECT_NEW
+// WARNING: HEventQueue.dispatchEvent() is taking  4544 ms.
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2020.1/data/ip'. 
+// Project name: lab0; location: C:/Users/admin/Desktop/psd/lab0; part: xc7a35tcpg236-1
+// WARNING: HEventQueue.dispatchEvent() is taking  1001 ms.
+dismissDialog("Open Project"); // bz (cs)
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 1124 ms. Increasing delay to 3000 ms.
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 0); // B (F, cs)
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 0); // B (F, cs)
+// Tcl Message: update_compile_order -fileset sources_1 
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd)]", 1); // B (F, cs)
+// PAPropertyPanels.initPanels (fpga_basicIO.vhd) elapsed time: 0.2s
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd)]", 1, true); // B (F, cs) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd)]", 1, true); // B (F, cs) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd)]", 1, true, false, false, false, false, true); // B (F, cs) - Double Click - Node
+selectButton(PAResourceCommand.PACommandNames_TOGGLE_VIEW_NAV, (String) null); // E (H, cs)
+// Run Command: PAResourceCommand.PACommandNames_TOGGLE_VIEW_NAV
+// Elapsed time: 113 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd)]", 1); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_hex0 : hex2disp(Behavioral) (hex2disp.vhd)]", 3, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_hex0 : hex2disp(Behavioral) (hex2disp.vhd)]", 3, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_hex0 : hex2disp(Behavioral) (hex2disp.vhd)]", 3, false, false, false, false, false, true); // B (F, cs) - Double Click
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_hex0 : hex2disp(Behavioral) (hex2disp.vhd)]", 3, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_hex0 : hex2disp(Behavioral) (hex2disp.vhd)]", 3, false); // B (F, cs)
+// Elapsed time: 47 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_hex1 : hex2disp(Behavioral) (hex2disp.vhd)]", 4, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_hex1 : hex2disp(Behavioral) (hex2disp.vhd)]", 4, false, false, false, false, false, true); // B (F, cs) - Double Click
+// Elapsed time: 17 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_clkdiv : clkdiv(mixed) (clkdiv.vhd)]", 7, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_clkdiv : clkdiv(mixed) (clkdiv.vhd)]", 7, false, false, false, false, false, true); // B (F, cs) - Double Click
+// Elapsed time: 25 seconds
+selectCodeEditor("clkdiv.vhd", 110, 180); // bP (w, cs)
+selectCodeEditor("clkdiv.vhd", 108, 204); // bP (w, cs)
+selectCodeEditor("clkdiv.vhd", 108, 204, false, false, false, false, true); // bP (w, cs) - Double Click
+selectCodeEditor("clkdiv.vhd", 106, 200); // bP (w, cs)
+selectCodeEditor("clkdiv.vhd", 106, 200); // bP (w, cs)
+selectCodeEditor("clkdiv.vhd", 22, 198); // bP (w, cs)
+selectCodeEditor("clkdiv.vhd", 22, 196, false, false, false, false, true); // bP (w, cs) - Double Click
+selectCodeEditor("clkdiv.vhd", 108, 196); // bP (w, cs)
+selectCodeEditor("clkdiv.vhd", 108, 196, false, false, false, false, true); // bP (w, cs) - Double Click
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_circuito : circuito(behavioral) (circuito.vhd)]", 8, true); // B (F, cs) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, fpga_basicIO(Behavioral) (fpga_basicIO.vhd), inst_circuito : circuito(behavioral) (circuito.vhd), inst_datapath : datapath(behavioral) (datapath.vhd)]", 10, false, false, false, false, false, true); // B (F, cs) - Double Click
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 238ms to process. Increasing delay to 2000 ms.
+// Elapsed time: 12 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources]", 12); // B (F, cs)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1]", 13); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1, circuito_tb(behavior) (circuito_tb.vhd)]", 14, true); // B (F, cs) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1, circuito_tb(behavior) (circuito_tb.vhd)]", 14, true, false, false, false, false, true); // B (F, cs) - Double Click - Node
+// Elapsed time: 1065 seconds
+closeMainWindow("lab0 - [C:/Users/admin/Desktop/psd/lab0/lab0.xpr] - Vivado 2020.1"); // cs
+// Run Command: PAResourceCommand.PACommandNames_EXIT
+// A (cs): Exit Vivado: addNotify
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (A)
+dismissDialog("Exit Vivado"); // A (cs)
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // af (cs)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // af (cs)
+selectMenu(PAResourceItoN.MainMenuMgr_OPEN_RECENT_PROJECT, "Open Recent"); // af (cs)
+selectMenuItem(PAResourceItoN.MainMenuMgr_OPEN_RECENT_PROJECT, "C:/Users/admin/Desktop/psd/lab1/project_L1.xpr"); // ai (cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // aa (q, cs)
+// TclEventType: PROJECT_CLOSE
+// Opening Vivado Project: C:/Users/admin/Desktop/psd/lab1/project_L1.xpr. Version: Vivado v2020.1.1 
+// bz (cs):  Open Project : addNotify
+selectButton("OptionPane.button", "Yes"); // JButton (v, B)
+// HMemoryUtils.trashcanNow. Engine heap size: 998 MB. GUI used memory: 72 MB. Current time: 10/4/20, 5:54:47 PM BST
+// Tcl Message: close_project 
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// Tcl Message: open_project C:/Users/admin/Desktop/psd/lab1/project_L1.xpr 
+// Tcl Message: INFO: [Project 1-313] Project file moved from 'D:/IST/2020-2021_1S/PSD/Labs/lab_rep/lab1' since last save. 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified 
+// TclEventType: PROJECT_NEW
+// WARNING: HEventQueue.dispatchEvent() is taking  2135 ms.
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2020.1/data/ip'. 
+// Project name: project_L1; location: C:/Users/admin/Desktop/psd/lab1; part: xc7a35tcpg236-1
+dismissDialog("Open Project"); // bz (cs)
+// a (cs): Critical Messages: addNotify
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (a)
+dismissDialog("Critical Messages"); // a (cs)
+// Tcl Message: update_compile_order -fileset sources_1 
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Project Manager, Add Sources]", 2, false); // u (J, cs)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cs): Add Sources: addNotify
+selectRadioButton(PAResourceAtoD.AddSrcWizard_SPECIFY_SIMULATION_SPECIFIC_HDL_FILES, "Add or create simulation sources"); // a (o, c)
+selectRadioButton(PAResourceAtoD.AddSrcWizard_SPECIFY_HDL_NETLIST_BLOCK_DESIGN, "Add or create design sources"); // a (o, c)
+selectRadioButton(PAResourceAtoD.AddSrcWizard_SPECIFY_OR_CREATE_CONSTRAINT_FILES, "Add or create constraints"); // a (o, c)
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceAtoD.ConstraintsChooserPanel_ADD_FILES, "Add Files"); // a (E, c)
+setFileChooser("C:/Users/admin/Desktop/psd/lab0/3rd/Basys3_Master.xdc");
+selectButton("FINISH", "Finish"); // JButton (j, c)
+// 'h' command handler elapsed time: 16 seconds
+dismissDialog("Add Sources"); // c (cs)
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -fileset constrs_1 -norecurse C:/Users/admin/Desktop/psd/lab0/3rd/Basys3_Master.xdc 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: import_files -fileset constrs_1 C:/Users/admin/Desktop/psd/lab0/3rd/Basys3_Master.xdc 
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // af (cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // aa (q, cs)
+// Elapsed time: 176 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd)]", 1); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd)]", 1, true); // B (F, cs) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd), inst_datapath : datapath(behavioral) (datapath.vhd)]", 3, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd), inst_datapath : datapath(behavioral) (datapath.vhd)]", 3, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd), inst_datapath : datapath(behavioral) (datapath.vhd)]", 3, false, false, false, false, false, true); // B (F, cs) - Double Click
+selectButton(PAResourceCommand.PACommandNames_TOGGLE_VIEW_NAV, (String) null); // E (H, cs)
+// Run Command: PAResourceCommand.PACommandNames_TOGGLE_VIEW_NAV
+// Elapsed time: 10 seconds
+selectCodeEditor("datapath.vhd", 332, 98); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 338, 102); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 338, 90); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 344, 106); // bP (w, cs)
+// Run Command: PAResourceCommand.PACommandNames_RUN_SYNTHESIS
+// am (cs): Save Project: addNotify
+// Elapsed time: 11 seconds
+selectButton(PAResourceQtoS.SaveProjectUtils_CANCEL, "Cancel"); // a (am)
+dismissDialog("Save Project"); // am (cs)
+applyEnter(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, (String) null); // B (F, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_FLOW, "Flow"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // aa (q, cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_EDIT, "Edit"); // aa (q, cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_EDIT, "Edit"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_FLOW, "Flow"); // aa (q, cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_FLOW, "Flow"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // aa (q, cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_WINDOW, "Window"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_FLOW, "Flow"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_EDIT, "Edit"); // aa (q, cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_EDIT, "Edit"); // aa (q, cs)
+selectMenu(PAResourceItoN.MainMenuMgr_FLOW, "Flow"); // aa (q, cs)
+dismissMenu(PAResourceItoN.MainMenuMgr_FLOW, "Flow"); // aa (q, cs)
+applyEnter(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, (String) null); // B (F, cs)
+// Run Command: PAResourceCommand.PACommandNames_RUN_SYNTHESIS
+// am (cs): Save Project: addNotify
+selectButton(PAResourceQtoS.SaveProjectUtils_CANCEL, "Cancel"); // a (am)
+dismissDialog("Save Project"); // am (cs)
+selectButton(PAResourceItoN.MainToolbarMgr_RUN, (String) null); // aA (g, cs)
+// Elapsed time: 29 seconds
+selectCodeEditor("datapath.vhd", 70, 92); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 70, 92, false, false, false, false, true); // bP (w, cs) - Double Click
+selectCodeEditor("datapath.vhd", 64, 96, false, false, false, true, false); // bP (w, cs) - Popup Trigger
+selectMenuItem(RDIResource.HInputHandler_REPLACE_TEXT, "Replace..."); // ai (ao, cs)
+selectComboBox("FindAndReplaceDialog.cs_Replace with:", "entrada", -1); // JComboBox (cs, FindAndReplaceDialog)
+selectRadioButton((HResource) null, "Entire Scope"); // JRadioButton (cs, FindAndReplaceDialog)
+selectButton("FindAndReplaceDialog.cs_Find", "Find"); // JButton (cs, FindAndReplaceDialog)
+typeControlKey(null, null, 'z');
+selectCodeEditor("datapath.vhd", 410, 174); // bP (w, cs)
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+selectCodeEditor("datapath.vhd", 54, 32); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 60, 42); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 60, 42, false, false, false, false, true); // bP (w, cs) - Double Click
+selectCodeEditor("datapath.vhd", 56, 40, false, false, false, true, false); // bP (w, cs) - Popup Trigger
+selectCodeEditor("datapath.vhd", 570, 104); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 62, 40); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 62, 40, false, false, false, false, true); // bP (w, cs) - Double Click
+// [GUI Memory]: 134 MB (+3225kb) [00:30:45]
+// Elapsed time: 60 seconds
+selectCodeEditor("datapath.vhd", 110, 298); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 158, 220); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 228, 302); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 234, 166); // bP (w, cs)
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+selectCodeEditor("datapath.vhd", 324, 76); // bP (w, cs)
+selectCodeEditor("datapath.vhd", 364, 128); // bP (w, cs)
+// Elapsed time: 85 seconds
+typeControlKey((HResource) null, "datapath.vhd", 'c'); // bP (w, cs)
+// Elapsed time: 42 seconds
+selectCodeEditor("datapath.vhd", 306, 112); // bP (w, cs)
+// Elapsed time: 108 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd)]", 1, true); // B (F, cs) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd)]", 1, true, false, false, false, true, false); // B (F, cs) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // af (ao, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, circuito(behavioral) (circuito.vhd)]", 1, true); // B (F, cs) - Node
+selectButton(PAResourceCommand.PACommandNames_ADD_SOURCES, "Sources_add_sources"); // E (g, cs)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cs): Add Sources: addNotify
+selectRadioButton(PAResourceAtoD.AddSrcWizard_SPECIFY_HDL_NETLIST_BLOCK_DESIGN, "Add or create design sources"); // a (o, c)
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceQtoS.SrcChooserPanel_CREATE_FILE, "Create File"); // a (E, c)
+// F (c): Create Source File: addNotify
+// Elapsed time: 14 seconds
+setText(PAResourceAtoD.CreateSrcFileDialog_FILE_NAME, "alu"); // ac (Q, F)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (F)
+dismissDialog("Create Source File"); // F (c)
+selectButton("FINISH", "Finish"); // JButton (j, c)
+// 'h' command handler elapsed time: 24 seconds
+dismissDialog("Add Sources"); // c (cs)
+// Tcl Message: close [ open C:/Users/admin/Desktop/psd/lab1/project_L1.srcs/sources_1/new/alu.vhd w ] 
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files C:/Users/admin/Desktop/psd/lab1/project_L1.srcs/sources_1/new/alu.vhd 
+// I (cs): Define Module: addNotify
+// Elapsed time: 11 seconds
+selectTable(PAResourceAtoD.DefineModulesDialog_DEFINE_MODULES_AND_SPECIFY_IO_PORTS, " ; in ; false ; 0 ; 0", 0, "false", 2); // ab (J, I)
+// Elapsed time: 35 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (I)
+// TclEventType: FILE_SET_CHANGE
+dismissDialog("Define Module"); // I (cs)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: update_compile_order -fileset sources_1 
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, alu(Behavioral) (alu.vhd)]", 4, false); // B (F, cs)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, alu(Behavioral) (alu.vhd)]", 4, false, false, false, false, false, true); // B (F, cs) - Double Click
+selectCodeEditor("alu.vhd", 244, 178); // bP (w, cs)
+// Elapsed time: 53 seconds
+selectCodeEditor("alu.vhd", 238, 174); // bP (w, cs)
+selectCodeEditor("alu.vhd", 234, 160); // bP (w, cs)
+selectCodeEditor("alu.vhd", 28, 90); // bP (w, cs)
+selectCodeEditor("alu.vhd", 122, 92); // bP (w, cs)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "datapath.vhd", 1); // m (l, cs)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "alu.vhd", 2); // m (l, cs)
+selectCodeEditor("alu.vhd", 120, 86); // bP (w, cs)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "datapath.vhd", 1); // m (l, cs)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "alu.vhd", 2); // m (l, cs)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "datapath.vhd", 1); // m (l, cs)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "alu.vhd", 2); // m (l, cs)
+selectCodeEditor("alu.vhd", 140, 104); // bP (w, cs)
+// TclEventType: DG_GRAPH_STALE
+// Elapsed time: 105 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "Project Summary", 0); // m (l, cs)
+selectTab(PAResourceOtoP.ProjectDashboardView_TABBED_PANE, PAResourceOtoP.ProjectDashboardView_DASHBOARD, "Dashboard", 1); // w (v, cs)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "datapath.vhd", 1); // m (l, cs)
+// Elapsed time: 18 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "alu.vhd", 2); // m (l, cs)
+selectCodeEditor("alu.vhd", 106, 104); // bP (w, cs)
+closeView(PAResourceOtoP.PAViews_PROJECT_SUMMARY, "Project Summary"); // v
+// Elapsed time: 50 seconds
+selectCodeEditor("alu.vhd", 486, 108); // bP (w, cs)
+typeControlKey((HResource) null, "alu.vhd", 'c'); // bP (w, cs)
+selectCodeEditor("alu.vhd", 356, 128); // bP (w, cs)
+typeControlKey((HResource) null, "alu.vhd", 'v'); // bP (w, cs)
+selectCodeEditor("alu.vhd", 582, 130); // bP (w, cs)
+selectCodeEditor("alu.vhd", 518, 128); // bP (w, cs)
+typeControlKey((HResource) null, "alu.vhd", 'v'); // bP (w, cs)
+selectCodeEditor("alu.vhd", 112, 128); // bP (w, cs)
+selectCodeEditor("alu.vhd", 480, 130); // bP (w, cs)
