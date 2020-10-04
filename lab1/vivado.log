@@ -44,3 +44,6 @@ import_files -fileset constrs_1 C:/Users/admin/Desktop/psd/lab0/3rd/Basys3_Maste
 close [ open C:/Users/admin/Desktop/psd/lab1/project_L1.srcs/sources_1/new/alu.vhd w ]
 add_files C:/Users/admin/Desktop/psd/lab1/project_L1.srcs/sources_1/new/alu.vhd
 update_compile_order -fileset sources_1
+close [ open C:/Users/admin/Desktop/psd/lab1/project_L1.srcs/sources_1/new/common.vhd w ]
+add_files C:/Users/admin/Desktop/psd/lab1/project_L1.srcs/sources_1/new/common.vhd
+update_compile_order -fileset sources_1
