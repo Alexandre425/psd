@@ -7,8 +7,8 @@ entity datapath is
     port( 
         ent : in std_logic_vector (7 downto 0); --Dados de entrada
         slct : in alu_operation; --Seleção da operação a realizar na ALU
-        clk,rst: in std_logic; --Clock e reset
-        ent_out, res : out std_logic_vector (7 downto 0) --Dados de entrada e saída do registo 2, ambos sinais a representar no display de 7 segmentos; Saída do registo 2 
+        clk,rst,slct_disp: in std_logic; --Clock e reset
+        res : out std_logic_vector (7 downto 0) --Dados de entrada e saída do registo 2, ambos sinais a representar no display de 7 segmentos; Saída do registo 2 
         ); 
 end datapath;
 
@@ -33,6 +33,7 @@ architecture behavioral of datapath is
             rst : in std_logic                     --register reset
             );
     end component;
+                
 begin
     alu_inst : alu port map(    -- Mapping the ports of the ALU instance to the signals
         operand1 => r1_out,
@@ -49,5 +50,11 @@ begin
         D => alu_out,
         Q => r2_out,
         rst => rst);
+        
+    --Display selection
+    with slct_disp select
+        res <=
+                ent when DISP_ENT,
+                r2_out when others;
         
 end behavioral;
