@@ -14,17 +14,20 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity reg8 is
-  port(clk : in std_logic;
-       D : in std_logic_vector (7 downto 0);
-       Q : out std_logic_vector (7 downto 0));
+    port(
+        clk : in std_logic;                     --clock
+        D : in std_logic_vector (7 downto 0);   --register input (load)
+        Q : out std_logic_vector (7 downto 0)   --register output (load)
+        );
 end reg8;
 
-architecture archi of reg8 is
+--register output,conditioned by the clock 
+architecture arch1 of reg8 is
 begin
-process (clk)
-begin
-if (clk'event and clk = '1') then
-Q <= D;
-end if;
-end process;
-end archi;
+    process (clk)
+    begin
+        if (clk'event and clk = '1') then
+            Q <= D;
+        end if;
+    end process;
+end arch1;

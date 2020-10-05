@@ -5,21 +5,20 @@ use work.common.all;
 
 entity alu is
     port(
-        operand1, operand2 : in std_logic_vector (7 downto 0);
-        operator : in alu_operation;
-        result : out std_logic_vector (7 downto 0)
-        -- clk : in std_logic -- Probably doesn't actually need a clock
+        operand1, operand2 : in std_logic_vector (7 downto 0);  -- Operands
+        operator : in alu_operation;                            -- Operator
+        result : out std_logic_vector (7 downto 0)              -- Result of operation
     );
 end alu;
 
 architecture Behavioral of alu is
-    signal arith_in1, arith_in2 : unsigned (7 downto 0);
-    signal add_out, mult_out : unsigned (7 downto 0);
-    signal or_out, rtr_out: std_logic_vector (7 downto 0);
+    signal arith_in1, arith_in2 : unsigned (7 downto 0);    -- Arith inputs
+    signal add_out, mult_out : unsigned (7 downto 0);       -- Arith outputs
+    signal or_out, rtr_out: std_logic_vector (7 downto 0);  -- Logic outputs
     
 begin
     -- Data conversion
-    arith_in1 <= unsigned(operand1);
+    arith_in1 <= unsigned(operand1);    -- Convert to unsigned to perform arith operations
     arith_in2 <= unsigned(operand2);
     
     -- Adder
@@ -27,7 +26,7 @@ begin
     -- Multiplier
     mult_out <= arith_in1 * arith_in2;
     -- Logic OR
-    or_out <= operand1 or operand2;
+    or_out <= operand1 or operand2;     -- No conversion for logic operations
     -- Rotate right
     rtr_out <= operand2(0) & operand2(7 downto 1);
     
