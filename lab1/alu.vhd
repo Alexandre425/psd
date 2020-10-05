@@ -24,7 +24,7 @@ begin
     -- Adder
     add_out <= arith_in1 + arith_in2;
     -- Multiplier
-    mult_out <= arith_in1 * arith_in2;
+    mult_out <= arith_in1 * arith_in2;  -- não funciona??
     -- Logic OR
     or_out <= operand1 or operand2;     -- No conversion for logic operations
     -- Rotate right
