@@ -14,6 +14,7 @@ end alu;
 architecture Behavioral of alu is
     signal arith_in1, arith_in2 : unsigned (7 downto 0);    -- Arith inputs
     signal add_out, mult_out : unsigned (7 downto 0);       -- Arith outputs
+    signal mult_buffer : unsigned (15 downto 0);            -- Arith buffer for multiplication
     signal or_out, rtr_out: std_logic_vector (7 downto 0);  -- Logic outputs
     
 begin
@@ -24,7 +25,8 @@ begin
     -- Adder
     add_out <= arith_in1 + arith_in2;
     -- Multiplier
-    mult_out <= arith_in1 * arith_in2;  -- não funciona??
+    mult_buffer <= arith_in1 * arith_in2;  -- buffer with 16 bit size
+    mult_out <= mult_buffer(7 downto 0);
     -- Logic OR
     or_out <= operand1 or operand2;     -- No conversion for logic operations
     -- Rotate right

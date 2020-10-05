@@ -23,7 +23,7 @@ ARCHITECTURE behavior OF alu_tb IS
    END COMPONENT;
 
   --Inputs
-  SIGNAL operand1_in, operand2_in   : std_logic_vector(7 DOWNTO 0) := (OTHERS => '0');
+  SIGNAL operand1_in, operand2_in   : std_logic_vector(7 DOWNTO 0);
   SIGNAL operator_in : alu_operation;
 
   --Outputs
@@ -56,10 +56,10 @@ BEGIN
                    X"01" AFTER 160 ns,
                    X"01" AFTER 200 ns;
                    
-    operand2_in <= X"03" AFTER 40 ns,
-                   X"00" AFTER 100 ns,
-                   X"00" AFTER 160 ns,
-                   X"01" AFTER 200 ns;
+    operand2_in <= X"ff" AFTER 40 ns,
+                   X"02" AFTER 100 ns,
+                   X"ff" AFTER 160 ns,
+                   X"ff" AFTER 200 ns;
 
     WAIT;
   END PROCESS;
