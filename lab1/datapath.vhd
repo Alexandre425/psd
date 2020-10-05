@@ -29,7 +29,8 @@ architecture behavioral of datapath is
         port(
             clk : in std_logic;                     --clock
             D : in std_logic_vector (7 downto 0);   --register input (load)
-            Q : out std_logic_vector (7 downto 0)   --register output (load)
+            Q : out std_logic_vector (7 downto 0);   --register output (load)
+            rst : in std_logic                     --register reset
             );
     end component;
 begin
@@ -41,10 +42,12 @@ begin
     reg1_inst : reg8 port map(  -- Mapping the ports of the register1 instance to the signals
         clk => clk,
         D => ent,
-        Q => r1_out);
+        Q => r1_out,
+        rst => rst);
     reg2_inst : reg8 port map(  -- Mapping the ports of the register2 instance to the signals
         clk => clk,
         D => alu_out,
-        Q => r2_out);
+        Q => r2_out,
+        rst => rst);
         
 end behavioral;
