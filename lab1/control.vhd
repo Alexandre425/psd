@@ -2,14 +2,15 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.STD_LOGIC_ARITH.all;
 use IEEE.STD_LOGIC_UNSIGNED.all;
+use work.common.all;
 
 
 entity control is
-  port (
-    clk, rst : in  std_logic; --Clock e reset
-    oper    : in  std_logic_vector (2 downto 0); --Instrução para a transição de estados na fsm
-    enable   : out std_logic; 
-    slct     : out std_logic_vector (1 downto 0) --Selecionar Operação
+    port (
+        clk, rst : in  std_logic; --Clock e reset
+        oper     : in  std_logic_vector (2 downto 0); --Instrução para a transição de estados na fsm
+        enable   : out std_logic; 
+        slct     : out alu_operation --Selecionar Operação
         ); 
 end control;
 
