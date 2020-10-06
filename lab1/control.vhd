@@ -55,8 +55,8 @@ begin
                 if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then   -- When pressing the enter button
                     nextstate <= S_LOAD;    -- Next state is the "load to R2" state
                 end if;
-                slct   <= ALU_ADD;
-                enable <= REG1 or not REG2;
+                slct   <= ALU_ADD;          -- Select the operation the ALU will perform
+                enable <= REG1 or not REG2; -- Choose which registers will be enabled (in this case R1)
                 
             when S_LOAD =>
                 nextstate   <= S_ADD;
