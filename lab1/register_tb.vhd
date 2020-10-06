@@ -17,13 +17,15 @@ ARCHITECTURE arch1 OF reg8_tb IS
     PORT(
         clk : in std_logic;                     --clock
         D : in std_logic_vector (7 downto 0);   --register input (load)
-        Q : out std_logic_vector (7 downto 0)   --register output (load)
+        Q : out std_logic_vector (7 downto 0);  --register output (load)
+        rst : in std_logic                     --register reset
         );
   END COMPONENT;
 
   --Inputs
   SIGNAL clk     : std_logic                    := '0';
   SIGNAL D_in : std_logic_vector(7 DOWNTO 0) := (OTHERS => '0');
+  SIGNAL rst : std_logic := '0';
 
   --Outputs
   SIGNAL Q_out : std_logic_vector(7 DOWNTO 0);
@@ -37,7 +39,8 @@ BEGIN
   uut : reg8 PORT MAP (
     clk     => clk,
     D   => D_in,
-    Q => Q_out
+    Q => Q_out,
+    rst => rst
     );
 
   -- Clock process definitions
