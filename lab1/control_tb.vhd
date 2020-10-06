@@ -30,6 +30,9 @@ ARCHITECTURE behavior OF control_tb IS
   --Outputs
   SIGNAL enable_out : std_logic_vector(1 DOWNTO 0) := (OTHERS => '1');
   SIGNAL slct_out : alu_operation := ALU_ADD;
+  
+  -- Clock period definitions
+  CONSTANT clk_period : time := 10 ns;
 
 BEGIN
 
@@ -40,6 +43,16 @@ BEGIN
     enable => enable_out,
     slct   => slct_out
     );
+    
+    
+  -- Clock process definitions
+  clk_process : PROCESS
+  BEGIN
+    clk_in <= '0';
+    WAIT FOR clk_period/2;
+    clk_in <= '1';
+    WAIT FOR clk_period/2;
+  END PROCESS;
 
   -- Stimulus process
   stim_proc : PROCESS
@@ -48,29 +61,28 @@ BEGIN
     WAIT FOR 10 ns;
 
     -- insert stimulus here
-    operator_in <= ALU_ADD AFTER 0 ns,
-                   ALU_MULT AFTER 30 ns,
-                   ALU_OR AFTER 70 ns,
-                   ALU_RTR AFTER 80 ns;
+    buttons_in(4) <= '1' AFTER 0 ns,      --botao de reset
+                   '0' AFTER 10 ns,
+                   '1' AFTER 150ns;
 
-    operand1_in <= X"01" AFTER 0 ns,
-                   X"ff" AFTER 10 ns,
-                   X"fd" AFTER 20 ns,
-                   X"01" AFTER 30 ns,
-                   X"02" AFTER 40 ns,
-                   X"7F" AFTER 50 ns,
-                   X"01" AFTER 70 ns;
+    buttons_in(2) <= '1' AFTER 20 ns,      --botao de enter
+                   '0' AFTER 30 ns,
+                   '1' AFTER 100 ns,
+                   '0' AFTER 110ns,
+                   '1' AFTER 120ns,
+                   '0' AFTER 130ns;
+
+    buttons_in(3) <= '1' AFTER 40 ns,      --botao de forward
+                   '0' AFTER 50 ns,
+                   '1' AFTER 60 ns,
+                   '0' AFTER 70 ns,
+                   '1' AFTER 80 ns,
+                   '0' AFTER 90 ns;
+
                    
-    operand2_in <= X"01" AFTER 0 ns,
-                   X"01" AFTER 10 ns,
-                   X"01" AFTER 20 ns,
-                   X"01" AFTER 30 ns,
-                   X"02" AFTER 40 ns,
-                   X"02" AFTER 50 ns,
-                   X"03" AFTER 60 ns,
-                   X"02" AFTER 70 ns,
-                   X"01" AFTER 80 ns,
-                   X"02" AFTER 90 ns;
+    buttons_in(1) <= '1' AFTER 90 ns,      --botao de backwards
+                   '0' AFTER 100 ns;
+ 
 
     WAIT;
   END PROCESS;
