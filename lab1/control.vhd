@@ -7,7 +7,7 @@ use work.common.all;
 
 entity control is
     port (
-        clk, rst : in  std_logic; -- Clock e reset
+        clk : in  std_logic; -- Clock e reset
         buttons  : in  std_logic_vector (4 downto 0); -- Input buttons
         enable   : out std_logic_vector (1 downto 0); -- Enable signals of the registers
         slct     : out alu_operation --Selecionar Operação
@@ -25,7 +25,7 @@ architecture behavioral of control is
         S_RTR, 
         S_DISPLAY       -- Display the result value
     );
-    signal currstate, nextstate : fsm_states; --Sinais estado atual e estado seguinte
+    signal currstate, nextstate : fsm_states; --Current state and next state signals
      
     constant BUT_OPER_FWD : integer := 3;
     constant BUT_OPER_BCK : integer := 1;
@@ -35,11 +35,9 @@ architecture behavioral of control is
     constant REG2 : std_logic_vector (1 downto 0) := "10";
     
 begin
-    state_reg : process (clk, rst)
+    state_reg : process (clk)
     begin
-        if rst = '1' then
-            currstate <= S_RESET;
-        elsif clk'event and clk = '1' then
+        if clk'event and clk = '1' then
             currstate <= nextstate;
         end if;
     end process;
