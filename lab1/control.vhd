@@ -10,8 +10,7 @@ entity control is
         buttons     : in  std_logic_vector (4 downto 0); -- Input buttons
         enable      : out std_logic_vector (1 downto 0); -- Enable signals of the registers
         slct        : out alu_operation; --Selecionar Operação
-        rst         : out std_logic;    -- Resets the registers
-        slct_disp   : out std_logic    -- Selects which value is displayed
+        rst         : out std_logic    -- Resets the registers
         ); 
 end control;
 
@@ -23,8 +22,7 @@ architecture behavioral of control is
         S_ADD,          -- States to select the operator
         S_MULT, 
         S_OR, 
-        S_RTR, 
-        S_DISPLAY       -- Display the result value
+        S_RTR
     );
     signal currstate, nextstate : fsm_states; --Current state and next state signals
      
@@ -56,7 +54,7 @@ begin
                 end if;
                 slct   <= ALU_ADD;          -- Select the operation the ALU will perform
                 enable <= REG1 or not REG2; -- Choose which registers will be enabled (in this case R1)
-                rst <= '1';
+                rst <= '1';                 -- Reset the registers
                 
             when S_LOAD =>
                 nextstate   <= S_ADD;
@@ -65,7 +63,7 @@ begin
                 rst <= '0';
                 
             when S_OPER =>
-                nextstate   <= S_DISPLAY;
+                nextstate   <= S_ADD;
                 enable      <= not REG1 or REG2;
                 
             when S_ADD =>
@@ -119,13 +117,6 @@ begin
                 end if;
                 slct    <= ALU_RTR;
                 enable  <= REG1 or not REG2;
-            when S_DISPLAY =>
-                if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
-                    nextstate <= S_ADD;
-                elsif buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
-                    nextstate <= S_RESET;
-                enable <= not REG1 or not REG2;
-                end if; 
         end case;
   end process;
 

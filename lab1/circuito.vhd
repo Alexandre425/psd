@@ -13,8 +13,8 @@ entity circuito is
         clk         : in  std_logic;
         buttons     : in  std_logic_vector(4 downto 0);
         ent         : in  std_logic_vector(7 downto 0);
-        res         : out std_logic_vector(7 downto 0);
-        oper_disp   : out std_logic_vector(7 downto 0)
+        res         : out std_logic_vector(15 downto 0);
+        oper_disp   : out std_logic_vector(3 downto 0)
         );
 end circuito;
 
@@ -34,7 +34,7 @@ architecture behavioral of circuito is
             slct : in alu_operation; --Seleção da operação a realizar na ALU
             enable : in std_logic_vector (1 downto 0);  -- Enable signals of the registers
             clk, rst, slct_disp: in std_logic; --Clock, reset, seleção de display
-            res : out std_logic_vector (7 downto 0) --Dados de entrada e saída do registo 2, ambos sinais a representar no display de 7 segmentos; Saída do registo 2 
+            res : out std_logic_vector (15 downto 0) --Dados de entrada e saída do registo 2, ambos sinais a representar no display de 7 segmentos; Saída do registo 2 
             ); 
     end component;
 

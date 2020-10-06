@@ -33,7 +33,7 @@ ARCHITECTURE behavior OF control_tb IS
   
   -- Clock period definitions
   CONSTANT clk_period : time := 10 ns;
-
+  
 BEGIN
 
   -- Instantiate the Unit Under Test (UUT)

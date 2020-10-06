@@ -8,8 +8,8 @@ entity datapath is
         ent : in std_logic_vector (7 downto 0); --Dados de entrada
         slct : in alu_operation; --Seleção da operação a realizar na ALU
         enable : in std_logic_vector (1 downto 0);  -- Enable signals of the registers
-        clk, rst, slct_disp: in std_logic; --Clock, reset, seleção de display
-        res : out std_logic_vector (7 downto 0) --Dados de entrada e saída do registo 2, ambos sinais a representar no display de 7 segmentos; Saída do registo 2 
+        clk, rst: in std_logic; --Clock, reset
+        res : out std_logic_vector (15 downto 0) -- Results (data in (15:8) and R2 (7:0))
         ); 
 end datapath;
 
@@ -54,10 +54,6 @@ begin
         rst => rst,
         en_reg8 => enable(REG2_BIT));
         
-    --Display selection
-    with slct_disp select
-        res <=
-                ent when DISP_ENT,
-                r2_out when others;
+    res <= ent & r2_out;
         
 end behavioral;
