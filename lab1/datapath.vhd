@@ -7,7 +7,8 @@ entity datapath is
     port( 
         ent : in std_logic_vector (7 downto 0); --Dados de entrada
         slct : in alu_operation; --Seleção da operação a realizar na ALU
-        clk, rst, slct_disp, enable: in std_logic; --Clock, reset, seleção de display e enable
+        enable : in std_logic_vector (1 downto 0);  -- Enable signals of the registers
+        clk, rst, slct_disp: in std_logic; --Clock, reset, seleção de display
         res : out std_logic_vector (7 downto 0) --Dados de entrada e saída do registo 2, ambos sinais a representar no display de 7 segmentos; Saída do registo 2 
         ); 
 end datapath;
@@ -45,13 +46,13 @@ begin
         D => ent,
         Q => r1_out,
         rst => rst,
-        en_reg8 => enable);
+        en_reg8 => enable(REG1_BIT));
     reg2_inst : reg8 port map(  -- Mapping the ports of the register2 instance to the signals
         clk => clk,
         D => alu_out,
         Q => r2_out,
         rst => rst,
-        en_reg8 => enable);
+        en_reg8 => enable(REG2_BIT));
         
     --Display selection
     with slct_disp select
