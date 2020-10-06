@@ -1,16 +1,17 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
-use IEEE.STD_LOGIC_ARITH.all;
-use IEEE.STD_LOGIC_UNSIGNED.all;
+use IEEE.NUMERIC_STD.ALL;
 use work.common.all;
 
 
 entity control is
     port (
-        clk : in  std_logic; -- Clock e reset
-        buttons  : in  std_logic_vector (4 downto 0); -- Input buttons
-        enable   : out std_logic_vector (1 downto 0); -- Enable signals of the registers
-        slct     : out alu_operation --Selecionar Operação
+        clk         : in  std_logic; -- Clock e reset
+        buttons     : in  std_logic_vector (4 downto 0); -- Input buttons
+        enable      : out std_logic_vector (1 downto 0); -- Enable signals of the registers
+        slct        : out alu_operation; --Selecionar Operação
+        rst         : out std_logic;    -- Resets the registers
+        slct_disp   : out std_logic    -- Selects which value is displayed
         ); 
 end control;
 
@@ -55,11 +56,13 @@ begin
                 end if;
                 slct   <= ALU_ADD;          -- Select the operation the ALU will perform
                 enable <= REG1 or not REG2; -- Choose which registers will be enabled (in this case R1)
+                rst <= '1';
                 
             when S_LOAD =>
                 nextstate   <= S_ADD;
                 slct        <= ALU_ADD;
                 enable      <= not REG1 or REG2;
+                rst <= '0';
                 
             when S_OPER =>
                 nextstate   <= S_DISPLAY;
