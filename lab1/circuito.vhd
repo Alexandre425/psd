@@ -32,7 +32,7 @@ architecture behavioral of circuito is
     port(
       a         : in  std_logic_vector(7 downto 0);
       oper      : in  std_logic_vector(1 downto 0);
-      clk       : in  std_logic;
+      clk,rst,slct_di       : in  std_logic;
       en_accum  : in  std_logic;
       rst_accum : in  std_logic;
       res       : out std_logic_vector(7 downto 0)
