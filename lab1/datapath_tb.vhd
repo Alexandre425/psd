@@ -66,18 +66,31 @@ BEGIN
     WAIT FOR 10 ns;
 
     -- insert stimulus here
-    rst <= '1' AFTER 0 ns,      -- STATE 1
+    rst <= '1' AFTER 0 ns,      -- STATE 1 (0)
            '0' AFTER 10 ns;     ----------
            
-    enable <= '1' AFTER 80 ns,  -- STATE 2
-              '0' AFTER 100 ns,  ----------
-              '1' AFTER 170 ns, -- STATE 3
-              '0' AFTER 190 ns; ----------
-              
-    slct <= ALU_OR AFTER 150 ns; -- STATE 2
+    enable <= '1' AFTER 80 ns,  -- STATE 1 (1) (INPUT)
+              '0' AFTER 90 ns,  ----------
+              '1' AFTER 170 ns, -- STATE 2 (2) (INPUT)
+              '0' AFTER 180 ns, ----------
+              '1' AFTER 230 ns, -- STATE 2 (3) (OPERATION)
+              '0' AFTER 240 ns, ----------
+              '1' AFTER 280 ns, -- STATE 3 (4) (DISPLAY)
+              '0' AFTER 290 ns, ----------
+              '1' AFTER 330 ns, -- STATE 2 (5) (INPUT)
+              '0' AFTER 340 ns, ----------
+              '1' AFTER 380 ns, -- STATE 2 (6) (OPERATION)
+              '0' AFTER 390 ns, ----------
+              '1' AFTER 410 ns, -- STATE 2 (7) (DISPLAY)
+              '0' AFTER 420 ns; ----------
 
-    ent <= X"01" AFTER 40 ns,   -- STATE 1
-           X"02" AFTER 150 ns;  -- STATE 2
+ 
+    slct <= ALU_OR AFTER 200 ns, -- STATE 2 (3)
+            ALU_ADD AFTER 360 ns; -- STATE 2 (6)
+
+    ent <= X"01" AFTER 40 ns,   -- STATE 1 (1)
+           X"02" AFTER 150 ns,  -- STATE 2 (2)
+           X"03" AFTER 300 ns;  -- STATE 2 (5)
 
     WAIT;
   END PROCESS;
