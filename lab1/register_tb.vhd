@@ -18,11 +18,7 @@ ARCHITECTURE arch1 OF reg8_tb IS
         clk : in std_logic;                     --clock
         D : in std_logic_vector (7 downto 0);   --register input (load)
         Q : out std_logic_vector (7 downto 0);  --register output (load)
-<<<<<<< HEAD
         rst, en_reg8 : in std_logic             --register reset and enable
-=======
-        rst : in std_logic                     --register reset
->>>>>>> 2ac309a69851620b6d641a3558b1aa32976e64a2
         );
   END COMPONENT;
 
@@ -30,10 +26,7 @@ ARCHITECTURE arch1 OF reg8_tb IS
   SIGNAL clk  : std_logic := '0';
   SIGNAL D_in : std_logic_vector(7 DOWNTO 0) := (OTHERS => '0');
   SIGNAL rst : std_logic := '0';
-<<<<<<< HEAD
-  SIGNAL en_reg8 : std_logic := '0';  
-=======
->>>>>>> 2ac309a69851620b6d641a3558b1aa32976e64a2
+  SIGNAL en_reg8 : std_logic := '0';
 
   --Outputs
   SIGNAL Q_out : std_logic_vector(7 DOWNTO 0);
@@ -45,18 +38,11 @@ BEGIN
 
   -- Instantiate the Unit Under Test (UUT)
   uut : reg8 PORT MAP (
-<<<<<<< HEAD
     clk => clk,
     D => D_in,
     Q => Q_out,
     rst => rst,
     en_reg8 => en_reg8
-=======
-    clk     => clk,
-    D   => D_in,
-    Q => Q_out,
-    rst => rst
->>>>>>> 2ac309a69851620b6d641a3558b1aa32976e64a2
     );
 
   -- Clock process definitions
