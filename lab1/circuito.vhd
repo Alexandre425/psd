@@ -3,18 +3,13 @@ use IEEE.STD_LOGIC_1164.all;
 use IEEE.NUMERIC_STD.ALL;
 use work.common.all;
 
----- Uncomment the following library declaration if instantiating
----- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
 entity circuito is
     port (
         clk         : in  std_logic;
-        buttons     : in  std_logic_vector(4 downto 0);
-        ent         : in  std_logic_vector(7 downto 0);
-        res         : out std_logic_vector(15 downto 0);
-        oper_disp   : out std_logic_vector(3 downto 0)
+        buttons     : in  std_logic_vector(4 downto 0);     -- Directional buttons
+        ent         : in  std_logic_vector(7 downto 0);     -- Input data 
+        res         : out std_logic_vector(15 downto 0);    -- 16 bits that go to the 7seg display
+        oper_disp   : out std_logic_vector(3 downto 0)      -- Translates the alu operation to a number to display
         );
 end circuito;
 
@@ -25,7 +20,8 @@ architecture behavioral of circuito is
             buttons  : in  std_logic_vector (4 downto 0); -- Input buttons
             enable   : out std_logic_vector (1 downto 0); -- Enable signals of the registers
             slct     : out alu_operation; --Selecionar Operação
-            rst      : out std_logic -- Resets the registers
+            rst      : out std_logic; -- Resets the registers
+            oper_disp: out std_logic_vector (3 downto 0)    -- Number of the operation to be performed
             );  
     end component;
     component datapath
@@ -47,11 +43,12 @@ architecture behavioral of circuito is
 
 begin
     inst_control : control port map(
-        clk     => clk,
-        buttons => buttons,
-        enable  => enable,
-        slct    => slct,
-        rst     => rst
+        clk         => clk,
+        buttons     => buttons,
+        enable      => enable,
+        slct        => slct,
+        rst         => rst,
+        oper_disp   => oper_disp
     );
     inst_datapath : datapath port map(
         ent         => ent,
@@ -62,7 +59,6 @@ begin
         res         => res
     );
     
-    oper_disp <= std_logic_vector(to_unsigned(alu_operation'POS(slct), oper_disp'length));
 
 end Behavioral;
 

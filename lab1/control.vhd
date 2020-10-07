@@ -6,11 +6,12 @@ use work.common.all;
 
 entity control is
     port (
-        clk         : in  std_logic; -- Clock e reset
+        clk         : in  std_logic;
         buttons     : in  std_logic_vector (4 downto 0); -- Input buttons
         enable      : out std_logic_vector (1 downto 0); -- Enable signals of the registers
         slct        : out alu_operation; --Selecionar Operação
-        rst         : out std_logic    -- Resets the registers
+        rst         : out std_logic;    -- Resets the registers
+        oper_disp   : out std_logic_vector (3 downto 0)
         ); 
 end control;
 
@@ -120,7 +121,15 @@ begin
                 slct    <= ALU_RTR;
                 enable  <= REG1 or not REG2;
         end case;
-  end process;
-
+    end process;
+    
+    with currstate select
+        oper_disp <=
+            "0001" when S_ADD,
+            "0010" when S_MULT,
+            "0011" when S_OR,
+            "0100" when S_RTR,
+            "0000" when others;
+            
 end behavioral;
 
