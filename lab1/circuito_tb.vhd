@@ -63,11 +63,6 @@ BEGIN
         -- Do nothing
         wait for 100 ns;
         
-        -- Press the reset button
-        buttons_in <= "10000";
-        wait for 100ns;
-        buttons_in <= "00000";
-        
         -- Insert the second operand
         ent_in <= x"02";
         wait for 100ns;
@@ -85,6 +80,80 @@ BEGIN
         buttons_in <= "00100";
         wait for 100ns;
         buttons_in <= "00000";
+        
+         -- Press forward (advance to multiplication)
+        buttons_in <= "01000";
+        wait for 100ns;
+        buttons_in <= "00000";
+        wait for 100 ns;
+       
+        -- Press enter to perform the multiplication 
+        buttons_in <= "00100";
+        wait for 100ns;
+        buttons_in <= "00000";
+        
+         -- Press forward (advance to Multiplication)
+        buttons_in <= "01000";
+        wait for 100ns;
+        buttons_in <= "00000";
+        wait for 100 ns;
+        
+         -- Press forward (advance to Or)
+        buttons_in <= "01000";
+        wait for 100ns;
+        buttons_in <= "00000";
+        wait for 100 ns;
+        
+        
+         -- Press enter to perform the OR 
+        buttons_in <= "00100";
+        wait for 100ns;
+        buttons_in <= "00000";
+        
+         -- Press forward (advance to multiplication)
+        buttons_in <= "01000";
+        wait for 100ns;
+        buttons_in <= "00000";
+        wait for 100 ns;
+        
+        -- Press forward (advance to OR)
+        buttons_in <= "01000";
+        wait for 100ns;
+        buttons_in <= "00000";
+        wait for 100 ns;
+        
+        -- Press forward (advance to RTR)
+        buttons_in <= "01000";
+        wait for 100ns;
+        buttons_in <= "00000";
+        wait for 100 ns;
+        
+        -- Press enter to perform the RTR 
+        buttons_in <= "00100";
+        wait for 100ns;
+        buttons_in <= "00000";
+        
+        -- Press forward (advance to multiplication)
+        buttons_in <= "01000";
+        wait for 100ns;
+        buttons_in <= "00000";
+        wait for 100 ns;
+        
+        -- Press backwards (go back to add)
+        buttons_in <= "00010";
+        wait for 100ns;
+        buttons_in <= "00000";
+        wait for 100 ns;
+        
+        -- Press enter to perform the sum 
+        buttons_in <= "00100";
+        wait for 100ns;
+        buttons_in <= "00000";
+        
+        -- Reset again
+        buttons_in <= "10000";
+        wait for 100ns;
+        buttons_in <= "00000";     
         
         wait;
 

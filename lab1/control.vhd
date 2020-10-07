@@ -59,12 +59,12 @@ begin
                 enable <= REG1 or not REG2;
                 rst <= '0';
                 
-            when S_LOAD =>
+            when S_LOAD =>                  
                 nextstate   <= S_ADD;
                 slct        <= ALU_ADD;
                 enable      <= not REG1 or REG2;
                 
-            when S_OPER =>
+            when S_OPER =>                 
                 nextstate   <= S_ADD;
                 enable      <= not REG1 or REG2;
                 
