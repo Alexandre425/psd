@@ -49,7 +49,7 @@ architecture Behavioral of fpga_basicIO is
             clk         : in  std_logic;
             buttons     : in  std_logic_vector(4 downto 0);
             ent         : in  std_logic_vector(7 downto 0);
-            res         : out std_logic_vector(15 downto 0);
+            res         : out std_logic_vector(7 downto 0);
             oper_disp   : out std_logic_vector(3 downto 0)
         );
     end component;

@@ -72,11 +72,14 @@ begin
             when S_ADD =>
                 if buttons(BUT_OPER_FWD)'event and buttons(BUT_OPER_FWD) = '1' then
                     nextstate <= S_MULT;
-                elsif buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
+                end if;
+                if buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
                     nextstate <= S_RTR;
-                elsif buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
+                end if;
+                if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
                     nextstate <= S_OPER;
-                elsif buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
+                end if;
+                if buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
                     nextstate <= S_RESET;
                 end if;
                 slct    <= ALU_ADD;
@@ -85,11 +88,14 @@ begin
             when S_MULT =>
                 if buttons(BUT_OPER_FWD)'event and buttons(BUT_OPER_FWD) = '1' then
                     nextstate <= S_OR;
-                elsif buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
+                end if;
+                if buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
                     nextstate <= S_ADD;
-                elsif buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
+                end if;
+                if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
                     nextstate <= S_OPER;
-                elsif buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
+                end if;
+                if buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
                     nextstate <= S_RESET;
                 end if;
                 slct    <= ALU_MULT;
@@ -98,11 +104,14 @@ begin
             when S_OR =>
                 if buttons(BUT_OPER_FWD)'event and buttons(BUT_OPER_FWD) = '1' then
                     nextstate <= S_RTR;
-                elsif buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
+                end if;
+                if buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
                     nextstate <= S_MULT;
-                elsif buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
+                end if;
+                if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
                     nextstate <= S_OPER;
-                elsif buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
+                end if;
+                if buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
                     nextstate <= S_RESET;
                 end if;
                 slct    <= ALU_OR;
@@ -111,11 +120,14 @@ begin
             when S_RTR =>
                 if buttons(BUT_OPER_FWD)'event and buttons(BUT_OPER_FWD) = '1' then
                     nextstate <= S_ADD;
-                elsif buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
+                end if;
+                if buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
                     nextstate <= S_OR;
-                elsif buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
+                end if;
+                if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
                     nextstate <= S_OPER;
-                elsif buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
+                end if;
+                if buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
                     nextstate <= S_RESET;
                 end if;
                 slct    <= ALU_RTR;

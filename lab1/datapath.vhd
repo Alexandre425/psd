@@ -9,7 +9,7 @@ entity datapath is
         slct : in alu_operation; --Seleção da operação a realizar na ALU
         enable : in std_logic_vector (1 downto 0);  -- Enable signals of the registers
         clk, rst: in std_logic; --Clock, reset
-        res : out std_logic_vector (15 downto 0) -- Results (data in (15:8) and R2 (7:0))
+        res : out std_logic_vector (7 downto 0) -- Results (data in (15:8) and R2 (7:0))
     ); 
 end datapath;
 
@@ -54,6 +54,6 @@ begin
         rst => rst,
         en_reg8 => enable(REG2_BIT));
         
-    res <= ent & r2_out;
+    res <= r2_out;
         
 end behavioral;
