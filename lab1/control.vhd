@@ -17,7 +17,8 @@ end control;
 architecture behavioral of control is
     type fsm_states is (    -- State machine states
         S_RESET,        -- State after pressing the reset button
-        S_LOAD,         -- Load the value into register 2 after a reset
+        S_WAIT,         -- Load the value into register 1 after a reset and wait for an enter
+        S_LOAD,         -- Load the value into register 2 
         S_OPER,         -- Save the result of an operation
         S_ADD,          -- States to select the operator
         S_MULT, 
@@ -26,10 +27,7 @@ architecture behavioral of control is
     );
     signal currstate, nextstate : fsm_states; --Current state and next state signals
      
-    constant BUT_OPER_FWD : integer := 3;
-    constant BUT_OPER_BCK : integer := 1;
-    constant BUT_ENTER : integer := 2;
-    constant BUT_RESET : integer := 4;
+    
     constant REG1 : std_logic_vector (1 downto 0) := "01";
     constant REG2 : std_logic_vector (1 downto 0) := "10";
     
@@ -49,18 +47,22 @@ begin
 
         case currstate is
             when S_RESET =>
+                nextstate <= S_WAIT;            -- Next state is "wait and load to R1"
+                enable <= not REG1 or not REG2; -- Choose which registers will be enabled
+                rst <= '1';                     -- Reset the registers
+        
+            when S_WAIT =>
                 if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then   -- When pressing the enter button
-                    nextstate <= S_LOAD;    -- Next state is the "load to R2" state
+                    nextstate <= S_LOAD;
                 end if;
                 slct   <= ALU_ADD;          -- Select the operation the ALU will perform
-                enable <= REG1 or not REG2; -- Choose which registers will be enabled (in this case R1)
-                rst <= '1';                 -- Reset the registers
+                enable <= REG1 or not REG2;
+                rst <= '0';
                 
             when S_LOAD =>
                 nextstate   <= S_ADD;
                 slct        <= ALU_ADD;
                 enable      <= not REG1 or REG2;
-                rst <= '0';
                 
             when S_OPER =>
                 nextstate   <= S_ADD;

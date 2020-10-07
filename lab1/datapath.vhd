@@ -10,7 +10,7 @@ entity datapath is
         enable : in std_logic_vector (1 downto 0);  -- Enable signals of the registers
         clk, rst: in std_logic; --Clock, reset
         res : out std_logic_vector (15 downto 0) -- Results (data in (15:8) and R2 (7:0))
-        ); 
+    ); 
 end datapath;
 
 architecture behavioral of datapath is

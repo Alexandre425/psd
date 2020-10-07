@@ -33,7 +33,7 @@ architecture behavioral of circuito is
             ent : in std_logic_vector (7 downto 0); --Dados de entrada
             slct : in alu_operation; --Seleção da operação a realizar na ALU
             enable : in std_logic_vector (1 downto 0);  -- Enable signals of the registers
-            clk, rst, slct_disp: in std_logic; --Clock, reset, seleção de display
+            clk, rst: in std_logic; --Clock, reset
             res : out std_logic_vector (15 downto 0) --Dados de entrada e saída do registo 2, ambos sinais a representar no display de 7 segmentos; Saída do registo 2 
             ); 
     end component;
@@ -59,8 +59,7 @@ begin
         enable      => enable,
         rst         => rst,
         clk         => clk,
-        res         => res,
-        slct_disp   => slct_disp
+        res         => res
     );
     
     oper_disp <= std_logic_vector(to_unsigned(alu_operation'POS(slct), oper_disp'length));
