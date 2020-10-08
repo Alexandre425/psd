@@ -81,7 +81,7 @@ begin
     clk_disp => clk_disp);
 
 
-    buttons <= btnUreg & btnLreg & btnCreg & btnRreg & btnDreg;
+    buttons <= btnDreg & btnRreg & btnCreg & btnLreg & btnUreg;
     inst_circuito : circuito port map(
         clk         => clk,
         buttons     => buttons,
