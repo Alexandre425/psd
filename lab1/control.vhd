@@ -41,7 +41,7 @@ begin
     end process;
 
 
-    state_comb : process (currstate, buttons)
+    state_comb : process (currstate, state_buffer, buttons)
     begin  --  process
 
         nextstate <= currstate; -- by default, does not change the state.
@@ -49,32 +49,32 @@ begin
         case currstate is
             when S_RESET =>
                 nextstate <= S_WAIT;            -- Next state is "wait and load to R1"
-                enable <= not REG1 or not REG2; -- Choose which registers will be enabled
                 slct <= ALU_ADD;
+                enable <= "00";
                 
             when S_WAIT =>
                 if buttons(BUT_ENTER) = '1' then   -- When pressing the enter button
                     nextstate <= S_LOAD;
                 end if;
                 slct   <= ALU_ADD;          -- Select the operation the ALU will perform
-                enable <= REG1 or not REG2;
+                enable <= REG1;
                 
             when S_LOAD =>                 
                 state_buffer<= S_ADD; 
                 nextstate   <= S_RELEASE;
                 slct        <= ALU_ADD;
-                enable      <= not REG1 or REG2;
+                enable      <= REG2;
                 
             when S_OPER =>   
                 state_buffer    <= S_ADD;       
                 nextstate       <= S_RELEASE;
-                enable          <= not REG1 or REG2;
-                slct            <= ALU_ADD;
+                enable          <= REG2;
                 
             when S_RELEASE =>
                 if buttons = "00000" then
                     nextstate <= state_buffer;
                 end if;
+                enable <= "00";
                 
             when S_ADD =>
                 if buttons(BUT_OPER_FWD) = '1' then
@@ -89,7 +89,7 @@ begin
                     nextstate <= S_RESET;
                 end if;            
                 slct    <= ALU_ADD;
-                enable  <= REG1 or not REG2;
+                enable  <= REG1;
                 
             when S_MULT =>
                 if buttons(BUT_OPER_FWD) = '1' then
@@ -104,7 +104,7 @@ begin
                     nextstate <= S_RESET;
                 end if;                  
                 slct    <= ALU_MULT;
-                enable  <= REG1 or not REG2;
+                enable  <= REG1;
                 
             when S_OR =>
                 if buttons(BUT_OPER_FWD) = '1' then
@@ -119,7 +119,7 @@ begin
                     nextstate <= S_RESET;
                 end if;                  
                 slct    <= ALU_OR;
-                enable  <= REG1 or not REG2;
+                enable  <= REG1;
                 
             when S_RTR =>
                 if buttons(BUT_OPER_FWD) = '1' then
@@ -134,7 +134,7 @@ begin
                     nextstate <= S_RESET;
                 end if;                 
                 slct    <= ALU_RTR;
-                enable  <= REG1 or not REG2;
+                enable  <= REG1;
         end case;
     end process;
     

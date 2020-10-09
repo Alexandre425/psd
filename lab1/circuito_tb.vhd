@@ -15,7 +15,7 @@ ARCHITECTURE behavior OF circuito_tb IS
             clk         : in  std_logic;
             buttons     : in  std_logic_vector(4 downto 0);
             ent         : in  std_logic_vector(7 downto 0);
-            res         : out std_logic_vector(15 downto 0);
+            res         : out std_logic_vector(7 downto 0);
             oper_disp   : out std_logic_vector(3 downto 0)
         );
     end component;
@@ -25,13 +25,8 @@ ARCHITECTURE behavior OF circuito_tb IS
     signal buttons_in: std_logic_vector (4 downto 0) := (others => '0');
     signal ent_in: std_logic_vector (7 downto 0);
     -- Outputs
-    signal res_out: std_logic_vector (15 downto 0);
+    signal res_out: std_logic_vector (7 downto 0);
     signal oper_disp_out: std_logic_vector (3 downto 0);
-
-
-
-
-
 
     -- Clock period definitions
     CONSTANT clk_period : time := 10 ns;
@@ -62,6 +57,11 @@ BEGIN
     BEGIN
         -- Do nothing
         wait for 100 ns;
+       
+       -- Reset
+        buttons_in <= "10000";
+        wait for 100ns;
+        buttons_in <= "00000";
         
         -- Insert the second operand
         ent_in <= x"02";
