@@ -90,7 +90,7 @@ begin
         oper_disp   => oper_disp
     );
 
-  process (clk10hz, btnC)
+  process (clk10hz, btnC, btnU, btnL, btnR, btnD)
   begin
     if rising_edge(clk10hz) then
       btnCreg <= btnC;
