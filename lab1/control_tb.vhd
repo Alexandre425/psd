@@ -58,32 +58,39 @@ BEGIN
   stim_proc : PROCESS
   BEGIN
     -- hold reset state for 100 ns.
-    WAIT FOR 10 ns;
-
-    -- insert stimulus here
-    buttons_in(4) <= '1' AFTER 0 ns,      --botao de reset
-                   '0' AFTER 10 ns,
-                   '1' AFTER 150ns;
-
-    buttons_in(2) <= '1' AFTER 20 ns,      --botao de enter
-                   '0' AFTER 30 ns,
-                   '1' AFTER 100 ns,
-                   '0' AFTER 110ns,
-                   '1' AFTER 120ns,
-                   '0' AFTER 130ns;
-
-    buttons_in(3) <= '1' AFTER 40 ns,      --botao de forward
-                   '0' AFTER 50 ns,
-                   '1' AFTER 60 ns,
-                   '0' AFTER 70 ns,
-                   '1' AFTER 80 ns,
-                   '0' AFTER 90 ns;
-
-                   
-    buttons_in(1) <= '1' AFTER 90 ns,      --botao de backwards
-                   '0' AFTER 100 ns;
- 
-
+    
+    wait for 100ns;
+    
+    buttons_in(BUT_RESET) <= '1';
+    wait for 50ns;
+    buttons_in(BUT_RESET) <= '0';
+    wait for 50ns;
+    
+    buttons_in(BUT_ENTER) <= '1';
+    wait for 50ns;
+    buttons_in(BUT_ENTER) <= '0';
+    wait for 50ns;
+    
+    buttons_in(BUT_OPER_FWD) <= '1';
+    wait for 50ns;
+    buttons_in(BUT_OPER_FWD) <= '0';
+    wait for 50ns;
+    
+    buttons_in(BUT_OPER_FWD) <= '1';
+    wait for 50ns;
+    buttons_in(BUT_OPER_FWD) <= '0';
+    wait for 50ns;
+    
+    buttons_in(BUT_ENTER) <= '1';
+    wait for 50ns;
+    buttons_in(BUT_ENTER) <= '0';
+    wait for 50ns;
+    
+    buttons_in(BUT_RESET) <= '1';
+    wait for 50ns;
+    buttons_in(BUT_RESET) <= '0';
+    wait for 50ns;
+    
     WAIT;
   END PROCESS;
 

@@ -20,12 +20,13 @@ architecture behavioral of control is
         S_WAIT,         -- Load the value into register 1 after a reset and wait for an enter
         S_LOAD,         -- Load the value into register 2 
         S_OPER,         -- Save the result of an operation
+        S_RELEASE,      -- Wait for the realease of the keys
         S_ADD,          -- States to select the operator
         S_MULT, 
         S_OR, 
         S_RTR
     );
-    signal currstate, nextstate : fsm_states; --Current state and next state signals
+    signal currstate, nextstate, state_buffer : fsm_states; --Current state and next state signals
      
     
     constant REG1 : std_logic_vector (1 downto 0) := "01";
@@ -52,83 +53,86 @@ begin
                 slct <= ALU_ADD;
                 
             when S_WAIT =>
-                if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then   -- When pressing the enter button
+                if buttons(BUT_ENTER) = '1' then   -- When pressing the enter button
                     nextstate <= S_LOAD;
                 end if;
                 slct   <= ALU_ADD;          -- Select the operation the ALU will perform
                 enable <= REG1 or not REG2;
                 
-            when S_LOAD =>                  
-                nextstate   <= S_ADD;
+            when S_LOAD =>                 
+                state_buffer<= S_ADD; 
+                nextstate   <= S_RELEASE;
                 slct        <= ALU_ADD;
                 enable      <= not REG1 or REG2;
                 
-            when S_OPER =>                 
-                nextstate   <= S_ADD;
-                enable      <= not REG1 or REG2;
-                slct <= ALU_ADD;
+            when S_OPER =>   
+                state_buffer    <= S_ADD;       
+                nextstate       <= S_RELEASE;
+                enable          <= not REG1 or REG2;
+                slct            <= ALU_ADD;
+                
+            when S_RELEASE =>
+                if buttons = "00000" then
+                    nextstate <= state_buffer;
+                end if;
                 
             when S_ADD =>
-                if buttons(BUT_OPER_FWD)'event and buttons(BUT_OPER_FWD) = '1' then
-                    nextstate <= S_MULT;
-                end if;
-                if buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
-                    nextstate <= S_RTR;
-                end if;
-                if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
+                if buttons(BUT_OPER_FWD) = '1' then
+                    state_buffer <= S_MULT;
+                    nextstate <= S_RELEASE;
+                elsif buttons(BUT_OPER_BCK) = '1' then
+                    state_buffer <= S_RTR;
+                    nextstate <= S_RELEASE;
+                elsif buttons(BUT_ENTER) = '1' then
                     nextstate <= S_OPER;
-                end if;
-                if buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
+                elsif buttons(BUT_RESET) = '1' then
                     nextstate <= S_RESET;
-                end if;
+                end if;            
                 slct    <= ALU_ADD;
                 enable  <= REG1 or not REG2;
                 
             when S_MULT =>
-                if buttons(BUT_OPER_FWD)'event and buttons(BUT_OPER_FWD) = '1' then
-                    nextstate <= S_OR;
-                end if;
-                if buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
-                    nextstate <= S_ADD;
-                end if;
-                if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
+                if buttons(BUT_OPER_FWD) = '1' then
+                    state_buffer <= S_OR;
+                    nextstate <= S_RELEASE;
+                elsif buttons(BUT_OPER_BCK) = '1' then
+                    state_buffer <= S_ADD;
+                    nextstate <= S_RELEASE;
+                elsif buttons(BUT_ENTER) = '1' then
                     nextstate <= S_OPER;
-                end if;
-                if buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
+                elsif buttons(BUT_RESET) = '1' then
                     nextstate <= S_RESET;
-                end if;
+                end if;                  
                 slct    <= ALU_MULT;
                 enable  <= REG1 or not REG2;
                 
             when S_OR =>
-                if buttons(BUT_OPER_FWD)'event and buttons(BUT_OPER_FWD) = '1' then
-                    nextstate <= S_RTR;
-                end if;
-                if buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
-                    nextstate <= S_MULT;
-                end if;
-                if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
+                if buttons(BUT_OPER_FWD) = '1' then
+                    state_buffer <= S_RTR;
+                    nextstate <= S_RELEASE;
+                elsif buttons(BUT_OPER_BCK) = '1' then
+                    state_buffer <= S_MULT;
+                    nextstate <= S_RELEASE;
+                elsif buttons(BUT_ENTER) = '1' then
                     nextstate <= S_OPER;
-                end if;
-                if buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
+                elsif buttons(BUT_RESET) = '1' then
                     nextstate <= S_RESET;
-                end if;
+                end if;                  
                 slct    <= ALU_OR;
                 enable  <= REG1 or not REG2;
                 
             when S_RTR =>
-                if buttons(BUT_OPER_FWD)'event and buttons(BUT_OPER_FWD) = '1' then
-                    nextstate <= S_ADD;
-                end if;
-                if buttons(BUT_OPER_BCK)'event and buttons(BUT_OPER_BCK) = '1' then
-                    nextstate <= S_OR;
-                end if;
-                if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then
+                if buttons(BUT_OPER_FWD) = '1' then
+                    state_buffer <= S_ADD;
+                    nextstate <= S_RELEASE;
+                elsif buttons(BUT_OPER_BCK) = '1' then
+                    state_buffer <= S_OR;
+                    nextstate <= S_RELEASE;
+                elsif buttons(BUT_ENTER) = '1' then
                     nextstate <= S_OPER;
-                end if;
-                if buttons(BUT_RESET)'event and buttons(BUT_RESET) = '1' then
+                elsif buttons(BUT_RESET) = '1' then
                     nextstate <= S_RESET;
-                end if;
+                end if;                 
                 slct    <= ALU_RTR;
                 enable  <= REG1 or not REG2;
         end case;
