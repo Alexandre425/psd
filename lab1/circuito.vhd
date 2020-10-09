@@ -20,7 +20,6 @@ architecture behavioral of circuito is
             buttons  : in  std_logic_vector (4 downto 0); -- Input buttons
             enable   : out std_logic_vector (1 downto 0); -- Enable signals of the registers
             slct     : out alu_operation; --Selecionar Operação
-            rst      : out std_logic; -- Resets the registers
             oper_disp: out std_logic_vector (3 downto 0)    -- Number of the operation to be performed
             );  
     end component;
@@ -47,14 +46,13 @@ begin
         buttons     => buttons,
         enable      => enable,
         slct        => slct,
-        rst         => rst,
         oper_disp   => oper_disp
     );
     inst_datapath : datapath port map(
         ent         => ent,
         slct        => slct,
         enable      => enable,
-        rst         => rst,
+        rst         => buttons(BUT_RESET),
         clk         => clk,
         res         => res
     );

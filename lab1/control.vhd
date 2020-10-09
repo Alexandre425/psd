@@ -10,7 +10,6 @@ entity control is
         buttons     : in  std_logic_vector (4 downto 0); -- Input buttons
         enable      : out std_logic_vector (1 downto 0); -- Enable signals of the registers
         slct        : out alu_operation; --Selecionar Operação
-        rst         : out std_logic;    -- Resets the registers
         oper_disp   : out std_logic_vector (3 downto 0)
         ); 
 end control;
@@ -50,15 +49,14 @@ begin
             when S_RESET =>
                 nextstate <= S_WAIT;            -- Next state is "wait and load to R1"
                 enable <= not REG1 or not REG2; -- Choose which registers will be enabled
-                rst <= '1';                     -- Reset the registers
-        
+                slct <= ALU_ADD;
+                
             when S_WAIT =>
                 if buttons(BUT_ENTER)'event and buttons(BUT_ENTER) = '1' then   -- When pressing the enter button
                     nextstate <= S_LOAD;
                 end if;
                 slct   <= ALU_ADD;          -- Select the operation the ALU will perform
                 enable <= REG1 or not REG2;
-                rst <= '0';
                 
             when S_LOAD =>                  
                 nextstate   <= S_ADD;
@@ -68,6 +66,7 @@ begin
             when S_OPER =>                 
                 nextstate   <= S_ADD;
                 enable      <= not REG1 or REG2;
+                slct <= ALU_ADD;
                 
             when S_ADD =>
                 if buttons(BUT_OPER_FWD)'event and buttons(BUT_OPER_FWD) = '1' then
