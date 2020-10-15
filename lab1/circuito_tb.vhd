@@ -80,6 +80,7 @@ BEGIN
         buttons_in <= "00100";
         wait for 100ns;
         buttons_in <= "00000";
+        wait for 100ns;
         
          -- Press forward (advance to multiplication)
         buttons_in <= "01000";
@@ -91,6 +92,7 @@ BEGIN
         buttons_in <= "00100";
         wait for 100ns;
         buttons_in <= "00000";
+        wait for 100ns;
         
          -- Press forward (advance to Multiplication)
         buttons_in <= "01000";
@@ -109,6 +111,7 @@ BEGIN
         buttons_in <= "00100";
         wait for 100ns;
         buttons_in <= "00000";
+        wait for 100ns;
         
          -- Press forward (advance to multiplication)
         buttons_in <= "01000";
@@ -132,6 +135,7 @@ BEGIN
         buttons_in <= "00100";
         wait for 100ns;
         buttons_in <= "00000";
+        wait for 100ns;
         
         -- Press forward (advance to multiplication)
         buttons_in <= "01000";
@@ -149,6 +153,7 @@ BEGIN
         buttons_in <= "00100";
         wait for 100ns;
         buttons_in <= "00000";
+        wait for 100ns;
         
         -- Reset again
         buttons_in <= "10000";

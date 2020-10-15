@@ -33,109 +33,102 @@ architecture behavioral of control is
     constant REG2 : std_logic_vector (1 downto 0) := "10";
     
 begin
-    state_reg : process (clk)
-    begin
-        if clk'event and clk = '1' then
-            currstate <= nextstate;
-        end if;
-    end process;
 
-
-    state_comb : process (currstate, state_buffer, buttons)
+    state_comb : process (clk)
     begin  --  process
-
-        nextstate <= currstate; -- by default, does not change the state.
-
-        case currstate is
-            when S_RESET =>
-                nextstate <= S_WAIT;            -- Next state is "wait and load to R1"
-                slct <= ALU_ADD;
-                enable <= "00";
-                
-            when S_WAIT =>
-                if buttons(BUT_ENTER) = '1' then   -- When pressing the enter button
-                    nextstate <= S_LOAD;
-                end if;
-                slct   <= ALU_ADD;          -- Select the operation the ALU will perform
-                enable <= REG1;
-                
-            when S_LOAD =>                 
-                state_buffer<= S_ADD; 
-                nextstate   <= S_RELEASE;
-                slct        <= ALU_ADD;
-                enable      <= REG2;
-                
-            when S_OPER =>   
-                state_buffer    <= S_ADD;       
-                nextstate       <= S_RELEASE;
-                enable          <= REG2;
-                
-            when S_RELEASE =>
-                if buttons = "00000" then
-                    nextstate <= state_buffer;
-                end if;
-                enable <= "00";
-                
-            when S_ADD =>
-                if buttons(BUT_OPER_FWD) = '1' then
-                    state_buffer <= S_MULT;
-                    nextstate <= S_RELEASE;
-                elsif buttons(BUT_OPER_BCK) = '1' then
-                    state_buffer <= S_RTR;
-                    nextstate <= S_RELEASE;
-                elsif buttons(BUT_ENTER) = '1' then
-                    nextstate <= S_OPER;
-                elsif buttons(BUT_RESET) = '1' then
-                    nextstate <= S_RESET;
-                end if;            
-                slct    <= ALU_ADD;
-                enable  <= REG1;
-                
-            when S_MULT =>
-                if buttons(BUT_OPER_FWD) = '1' then
-                    state_buffer <= S_OR;
-                    nextstate <= S_RELEASE;
-                elsif buttons(BUT_OPER_BCK) = '1' then
-                    state_buffer <= S_ADD;
-                    nextstate <= S_RELEASE;
-                elsif buttons(BUT_ENTER) = '1' then
-                    nextstate <= S_OPER;
-                elsif buttons(BUT_RESET) = '1' then
-                    nextstate <= S_RESET;
-                end if;                  
-                slct    <= ALU_MULT;
-                enable  <= REG1;
-                
-            when S_OR =>
-                if buttons(BUT_OPER_FWD) = '1' then
-                    state_buffer <= S_RTR;
-                    nextstate <= S_RELEASE;
-                elsif buttons(BUT_OPER_BCK) = '1' then
-                    state_buffer <= S_MULT;
-                    nextstate <= S_RELEASE;
-                elsif buttons(BUT_ENTER) = '1' then
-                    nextstate <= S_OPER;
-                elsif buttons(BUT_RESET) = '1' then
-                    nextstate <= S_RESET;
-                end if;                  
-                slct    <= ALU_OR;
-                enable  <= REG1;
-                
-            when S_RTR =>
-                if buttons(BUT_OPER_FWD) = '1' then
-                    state_buffer <= S_ADD;
-                    nextstate <= S_RELEASE;
-                elsif buttons(BUT_OPER_BCK) = '1' then
-                    state_buffer <= S_OR;
-                    nextstate <= S_RELEASE;
-                elsif buttons(BUT_ENTER) = '1' then
-                    nextstate <= S_OPER;
-                elsif buttons(BUT_RESET) = '1' then
-                    nextstate <= S_RESET;
-                end if;                 
-                slct    <= ALU_RTR;
-                enable  <= REG1;
-        end case;
+    
+        if clk'event and clk = '1' then
+            case currstate is
+                when S_RESET =>
+                    currstate <= S_WAIT;            -- Next state is "wait and load to R1"
+                    slct <= ALU_ADD;
+                    enable <= "00";
+                    
+                when S_WAIT =>
+                    if buttons(BUT_ENTER) = '1' then   -- When pressing the enter button
+                        currstate <= S_LOAD;
+                    end if;
+                    slct   <= ALU_ADD;          -- Select the operation the ALU will perform
+                    enable <= REG1;
+                    
+                when S_LOAD =>                 
+                    state_buffer    <= S_ADD; 
+                    currstate       <= S_RELEASE;
+                    slct            <= ALU_ADD;
+                    enable          <= REG2;
+                    
+                when S_OPER =>   
+                    state_buffer    <= S_ADD;       
+                    currstate       <= S_RELEASE;
+                    enable          <= REG2;
+                    
+                when S_RELEASE =>
+                    if buttons = "00000" then
+                        currstate <= state_buffer;
+                    end if;
+                    enable <= "00";
+                    
+                when S_ADD =>
+                    if buttons(BUT_OPER_FWD) = '1' then
+                        state_buffer <= S_MULT;
+                        currstate <= S_RELEASE;
+                    elsif buttons(BUT_OPER_BCK) = '1' then
+                        state_buffer <= S_RTR;
+                        currstate <= S_RELEASE;
+                    elsif buttons(BUT_ENTER) = '1' then
+                        currstate <= S_OPER;
+                    elsif buttons(BUT_RESET) = '1' then
+                        currstate <= S_RESET;
+                    end if;            
+                    slct    <= ALU_ADD;
+                    enable  <= REG1;
+                    
+                when S_MULT =>
+                    if buttons(BUT_OPER_FWD) = '1' then
+                        state_buffer <= S_OR;
+                        currstate <= S_RELEASE;
+                    elsif buttons(BUT_OPER_BCK) = '1' then
+                        state_buffer <= S_ADD;
+                        currstate <= S_RELEASE;
+                    elsif buttons(BUT_ENTER) = '1' then
+                        currstate <= S_OPER;
+                    elsif buttons(BUT_RESET) = '1' then
+                        currstate <= S_RESET;
+                    end if;                  
+                    slct    <= ALU_MULT;
+                    enable  <= REG1;
+                    
+                when S_OR =>
+                    if buttons(BUT_OPER_FWD) = '1' then
+                        state_buffer <= S_RTR;
+                        currstate <= S_RELEASE;
+                    elsif buttons(BUT_OPER_BCK) = '1' then
+                        state_buffer <= S_MULT;
+                        currstate <= S_RELEASE;
+                    elsif buttons(BUT_ENTER) = '1' then
+                        currstate <= S_OPER;
+                    elsif buttons(BUT_RESET) = '1' then
+                        currstate <= S_RESET;
+                    end if;                  
+                    slct    <= ALU_OR;
+                    enable  <= REG1;
+                    
+                when S_RTR =>
+                    if buttons(BUT_OPER_FWD) = '1' then
+                        state_buffer <= S_ADD;
+                        currstate <= S_RELEASE;
+                    elsif buttons(BUT_OPER_BCK) = '1' then
+                        state_buffer <= S_OR;
+                        currstate <= S_RELEASE;
+                    elsif buttons(BUT_ENTER) = '1' then
+                        currstate <= S_OPER;
+                    elsif buttons(BUT_RESET) = '1' then
+                        currstate <= S_RESET;
+                    end if;                 
+                    slct    <= ALU_RTR;
+                    enable  <= REG1;
+            end case;
+        end if;
     end process;
     
     with currstate select
