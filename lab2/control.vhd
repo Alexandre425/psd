@@ -35,8 +35,8 @@ architecture behavioral of control is
     constant R1_EN : std_logic_vector (5 downto 0) := "000001";
     constant R2_EN : std_logic_vector (5 downto 0) := "000010";
     constant R3_EN : std_logic_vector (5 downto 0) := "000100";
-    constant R4_EN : std_logic_vector (5 downto 0) := "001001";
-    constant R5_EN : std_logic_vector (5 downto 0) := "010001";
+    constant R4_EN : std_logic_vector (5 downto 0) := "001000";
+    constant R5_EN : std_logic_vector (5 downto 0) := "010000";
     constant R6_EN : std_logic_vector (5 downto 0) := "100000";
     
 begin
