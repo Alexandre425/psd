@@ -5,6 +5,7 @@ package common is
     -- Defines the signal that controls which operation the ALU performs
     type alu_operation is (ALU_ADD, ALU_SUB);
     
+    -- Index of each of the registers for data/control arrays
     constant R1_IDX : integer := 0;
     constant R2_IDX : integer := 1;
     constant R3_IDX : integer := 2;

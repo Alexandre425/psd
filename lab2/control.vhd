@@ -87,17 +87,37 @@ begin
                 mult2_mux2 <= 'X';
                 alu1_mux1 <= '0';   -- Select R3
                 reg_mux <= '0';     -- R3 + R4 -> R4 (no need to select R4 because it needs no mux)
-                reg_enable <= R2_EN or R6_EN;   -- Enable the registers to store the result
+                reg_enable <= R2_EN or R4_EN or R6_EN;   -- Enable the registers to store the result
             when S_CYCLE2 =>
                 alu1_op <= ALU_ADD;
                 alu2_op <= ALU_ADD;
-                mult1_mux1 <= '0';  -- R1
+                mult1_mux1 <= '0';  -- R1 *
                 mult1_mux2 <= "01"; -- R5
-                mult2_mux1 <= '1';  -- R4 
+                mult2_mux1 <= '1';  -- R4 *
                 mult2_mux2 <= '1';  -- R5
-                alu1_mux1 <= '1';   -- R6
+                alu1_mux1 <= '1';   -- R6 +
+                reg_mux <= '0';     -- R4
+                reg_enable <= R1_EN or R2_EN or R3_EN or R4_EN;
+            when S_CYCLE3 =>
+                alu1_op <= ALU_ADD;
+                alu2_op <= ALU_ADD;
+                mult1_mux1 <= '1';  -- R2 *
+                mult1_mux2 <= "00"; -- R4
+                mult2_mux1 <= '0';  -- R3 *
+                mult2_mux2 <= '0';  -- R1
+                alu1_mux1 <= 'X';
                 reg_mux <= '0';
-                reg_enable <= R1_EN or R1_EN or R3_EN or R4_EN;
+                reg_enable <= R1_EN or R2_EN;
+            when S_CYCLE4 =>
+                alu1_op <= ALU_SUB;
+                alu2_op <= ALU_SUB;
+                mult1_mux1 <= 'X';
+                mult1_mux2 <= "XX";
+                mult2_mux1 <= 'X';
+                mult2_mux2 <= 'X';
+                alu1_mux1 <= 'X';
+                reg_mux <= '0';     -- R2 - R1
+                reg_enable <= R5_EN;
 		end case;
 	end process;
 
