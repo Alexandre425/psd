@@ -5,6 +5,7 @@ use work.common.all;
 
 entity datapath is
     port( 
+        A, B, C, D, E, F : in std_logic_vector (15 downto 0); -- Input data from memory
         alu1_op : in alu_operation;
         alu2_op : in alu_operation;
         clk, rst: in std_logic; --Clock, reset
@@ -30,8 +31,6 @@ architecture behavioral of datapath is
     -- Multiplier inputs and outputs
     signal mult1_in1, mult1_in2, mult2_in1, mult2_in2 : std_logic_vector(31 downto 0);
     signal mult1_out, mult2_out : std_logic_vector(31 downto 0);
-    -- Input data from memory
-    signal A, B, C, D, E, F : std_logic_vector (15 downto 0);
 
     component alu
         port(
@@ -48,13 +47,6 @@ architecture behavioral of datapath is
         );
     end component;
 
-    component MemIN is
-        port (
-            clk    : in  std_logic;
-            addr   : in  std_logic_vector(9 downto 0);
-            A, B, C, D, E, F : out std_logic_vector(15 downto 0)
-        );
-    end MemIN;
 
     component reg32
 		port(
@@ -88,12 +80,6 @@ begin
         operand1 => mult2_in1,
         operand2 => mult2_in2,
         result => mult2_out
-    );
-
-    mem_in : MemIN port map(
-        clk <= clk;
-        addr
-        A, B, C, D, E, F
     );
 
 	-- Six registers, each mapping to their output signal and enable bit
