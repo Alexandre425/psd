@@ -25,7 +25,7 @@ begin
         result <=
             std_logic_vector(add_out)   when ALU_ADD,
             std_logic_vector(sub_out)   when ALU_SUB, 
-            X"00"                       when others;    
+           	(others => '0')             when others;    
     
 end Behavioral;
 
@@ -42,6 +42,10 @@ entity multiplier is
 end multiplier;
 
 architecture arch of multiplier is
+
+signal result64 : std_logic_vector(63 downto 0);
+
 begin
-    result <= std_logic_vector(signed(operand1) * signed(operand2));
+   result64 <= std_logic_vector(signed(operand1) * signed(operand2));
+   result <= result64(31 downto 0);
 end arch ;

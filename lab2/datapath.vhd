@@ -121,6 +121,19 @@ begin
         Q => reg_out(R6_IDX)
     );
 
+    res <= reg_out(R5_IDX);
+
+    mult1_in1 <= reg_out(R1_IDX) when mult1_mux1 = '0' else reg_out(R2_IDX);
+    with mult1_mux2 select
+        mult1_in2 <= 
+            reg_out(R4_IDX) when "00",
+            reg_out(R5_IDX) when "01",
+            reg_out(R6_IDX) when others;
+    mult2_in1 <= reg_out(R3_IDX) when mult2_mux1 = '0' else reg_out(R4_IDX);
+    mult2_in1 <= reg_out(R1_IDX) when mult2_mux2 = '0' else reg_out(R5_IDX);
+    alu1_in1 <= reg_out(R3_IDX) when alu1_mux1 = '0' else reg_out(R6_IDX);
+
+
     -- Selecting the input of the registers with the register multiplexer bit
     -- When 0, input will be one of the arithmetic units, when 1 will load from memory
     reg_in(R1_IDX) <= mult2_out when reg_mux = '0' else X"0000" & A;

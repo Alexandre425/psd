@@ -78,12 +78,12 @@ architecture behavioral of circuito is
     signal F_in: std_logic_vector (15 downto 0);
 
     -- Memory address
-    signal addr : std_logic_vector (9 downto 0);
+    signal addr_buf : std_logic_vector (9 downto 0);
     
 begin
     mem_in : MemIN port map(
         clk => clk,
-        addr => addr,
+        addr => addr_buf,
         A => A_in,
         B => B_in,
         C => C_in,
@@ -104,7 +104,7 @@ begin
         alu1_mux1 => alu1_mux1,
         reg_mux => reg_mux,
         reg_enable => reg_enable,
-        addr => addr
+        addr => addr_buf
     );
     inst_datapath : datapath port map(
         A => A_in,
@@ -127,6 +127,7 @@ begin
         res => res
     );
     
+    addr <= addr_buf;
 
 end Behavioral;
 

@@ -4,10 +4,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity reg32 is
     port(
         clk : in std_logic;
-        D : in std_logic_vector (15 downto 0);
-        Q : out std_logic_vector (15 downto 0);
+        D : in std_logic_vector (31 downto 0);
+        Q : out std_logic_vector (31 downto 0);
         rst, en : in std_logic
-        );
+    );
 end reg32;
 
 architecture arch of reg32 is
