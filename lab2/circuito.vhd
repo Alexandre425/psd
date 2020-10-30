@@ -5,11 +5,11 @@ use work.common.all;
 
 entity circuito is
     port (
-        clk         : in  std_logic;
-        reset       : in std_logic;                         -- Reset signal
-        res         : out std_logic_vector(31 downto 0);    -- 32 bits determinant
-        addr        : in  std_logic_vector(9 downto 0)     -- MemIN adress
-        );
+        clk     : in  std_logic;
+        reset   : in std_logic;                         -- Reset signal
+        res     : out std_logic_vector (31 downto 0);    -- 32 bits determinant
+        addr    : out std_logic_vector (9 downto 0)    
+    );
 end circuito;
 
 architecture behavioral of circuito is
@@ -34,8 +34,10 @@ architecture behavioral of circuito is
             mult2_mux2  : out std_logic;
             alu1_mux1   : out std_logic;
             reg_mux     : out std_logic;    -- Multiplexer leading to every register
-            reg_enable  : out std_logic_vector (5 downto 0)     -- Enable of the 6 registers
-            );  
+            reg_enable  : out std_logic_vector (5 downto 0);    -- Enable of the 6 registers
+            addr        : out std_logic_vector (9 downto 0);    -- Counter used to address memory
+            write_en    : out std_logic     -- Write enable
+        );  
     end component;
     
     component datapath
@@ -55,33 +57,39 @@ architecture behavioral of circuito is
             ); 
     end component;
 
-    signal slctALU1   : alu_operation; --Select operation for ALU1
-    signal slctALU2   : alu_operation; --Select operation for ALU2
+    -- Operation selection for the ALU
+    signal slctALU1   : alu_operation;
+    signal slctALU2   : alu_operation;
+    -- Input multiplexers
     signal mult1_mux1  : std_logic; 
     signal mult1_mux2  : std_logic_vector(1 downto 0); 
     signal mult2_mux1  : std_logic;
     signal mult2_mux2  : std_logic; 
     signal alu1_mux1  : std_logic; 
+    -- Input multiplexers of the registers (to select arith unit or ABCDF)
     signal reg_mux : std_logic; 
     signal reg_enable : std_logic_vector(5 downto 0);
-    --signal test2: std_logic_vector (7 downto 0);
-    signal AData: std_logic_vector  (15 downto 0);
-    signal BData: std_logic_vector  (15 downto 0);
-    signal CData: std_logic_vector  (15 downto 0);
-    signal DData: std_logic_vector  (15 downto 0);
-    signal EData: std_logic_vector  (15 downto 0);
-    signal FData: std_logic_vector  (15 downto 0);
+    -- Input data form MemIN to the datapath
+    signal A_in: std_logic_vector (15 downto 0);
+    signal B_in: std_logic_vector (15 downto 0);
+    signal C_in: std_logic_vector (15 downto 0);
+    signal D_in: std_logic_vector (15 downto 0);
+    signal E_in: std_logic_vector (15 downto 0);
+    signal F_in: std_logic_vector (15 downto 0);
+
+    -- Memory address
+    signal addr : std_logic_vector (9 downto 0);
     
 begin
     mem_in : MemIN port map(
         clk => clk,
         addr => addr,
-        A => AData,
-        B => BData,
-        C => CData,
-        D => DData,
-        E => EData,
-        F => FData
+        A => A_in,
+        B => B_in,
+        C => C_in,
+        D => D_in,
+        E => E_in,
+        F => F_in
     );
     
     inst_control : control port map(
@@ -95,16 +103,16 @@ begin
         mult2_mux2 => mult2_mux2,
         alu1_mux1 => alu1_mux1,
         reg_mux => reg_mux,
-        reg_enable => reg_enable
-        
+        reg_enable => reg_enable,
+        addr => addr
     );
     inst_datapath : datapath port map(
-        A => AData,
-        B => BData,
-        C => CData,
-        D => DData,
-        E => EData,
-        F => FData,
+        A => A_in,
+        B => B_in,
+        C => C_in,
+        D => D_in,
+        E => E_in,
+        F => F_in,
         alu1_op => slctALU1,
         alu2_op => slctALU2,
         clk => clk,
@@ -117,7 +125,6 @@ begin
         reg_mux => reg_mux,
         reg_enable => reg_enable,
         res => res
-        
     );
     
 
