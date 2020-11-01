@@ -18,7 +18,8 @@ entity control is
         reg_mux     : out std_logic;    -- Multiplexer leading to every register
         reg_enable  : out std_logic_vector (5 downto 0);    -- Enable of the 6 registers
         addr        : out std_logic_vector (9 downto 0);    -- Counter used to address memory
-        write_en    : out std_logic     -- Write enable
+        write_en    : out std_logic;    -- Write enable
+        done        : out std_logic      -- Done Signal
     ); 
 end control;
     
@@ -50,8 +51,12 @@ begin
         if clk'event and clk = '1' then
             if reset = '1' then
                 counter <= "0000000000";
+                done    <= '0';
             elsif state = S_ADDR_INC then
                 counter <= counter + 1;
+                if counter = "0000010000" then
+                    done <= '1';                --All the determinants have been calculated
+                end if;
             end if;
         end if;
     end process;
@@ -99,7 +104,7 @@ begin
                 alu1_mux1 <= 'X';
                 reg_mux <= '1';         -- Load from memory with the register muxes
                 reg_enable <= R1_EN or R2_EN or R3_EN or R4_EN or R5_EN or R6_EN;   -- Enable registers to write
-                write_en <= 'X';    -- Enable writting to the output memory
+                write_en <= '0';    -- Enable writting to the output memory
             when S_CYCLE1 =>
                 alu1_op <= ALU_ADD;
                 alu2_op <= ALU_ADD;
@@ -110,7 +115,7 @@ begin
                 alu1_mux1 <= '0';   -- Select R3
                 reg_mux <= '0';     -- R3 + R4 -> R4 (no need to select R4 because it needs no mux)
                 reg_enable <= R2_EN or R4_EN or R6_EN;   -- Enable the registers to store the result
-                write_en <= 'X';
+                write_en <= '0';
             when S_CYCLE2 =>
                 alu1_op <= ALU_ADD;
                 alu2_op <= ALU_ADD;
@@ -121,7 +126,7 @@ begin
                 alu1_mux1 <= '1';   -- R6 +
                 reg_mux <= '0';     -- R4
                 reg_enable <= R1_EN or R2_EN or R3_EN or R4_EN;
-                write_en <= 'X';
+                write_en <= '0';
             when S_CYCLE3 =>
                 alu1_op <= ALU_ADD;
                 alu2_op <= ALU_ADD;
@@ -132,7 +137,7 @@ begin
                 alu1_mux1 <= 'X';
                 reg_mux <= '0';
                 reg_enable <= R1_EN or R2_EN;
-                write_en <= 'X';
+                write_en <= '0';
             when S_CYCLE4 =>
                 alu1_op <= ALU_SUB;
                 alu2_op <= ALU_SUB;
@@ -143,7 +148,7 @@ begin
                 alu1_mux1 <= 'X';
                 reg_mux <= '0';     -- R2 - R1
                 reg_enable <= R5_EN;
-                write_en <= 'X';
+                write_en <= '0';
             when S_WRITE =>
                 alu1_op <= ALU_ADD;
                 alu2_op <= ALU_ADD;

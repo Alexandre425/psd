@@ -7,8 +7,10 @@ entity circuito is
     port (
         clk     : in  std_logic;
         reset   : in std_logic;                         -- Reset signal
-        res     : out std_logic_vector (31 downto 0);    -- 32 bits determinant
-        addr    : out std_logic_vector (9 downto 0)    
+        done    : out std_logic;                        -- Done Signal
+        addr    : out std_logic_vector (9 downto 0);    
+        dataOUT : out std_logic_vector (31 downto 0);   -- 32 bits determinant
+        we      : out std_logic                         -- Write enable output 
     );
 end circuito;
 
@@ -20,6 +22,16 @@ architecture behavioral of circuito is
             addr   : in  std_logic_vector(9 downto 0);
             A, B, C, D, E, F : out std_logic_vector(15 downto 0)
         );
+    end component;
+    
+    component memOUT is
+        port (
+            clk     : in  std_logic;
+            addr    : in  std_logic_vector(9 downto 0);
+            we      : in  std_logic;
+            dataIN  : in  std_logic_vector(31 downto 0);
+            dataOUT : out  std_logic_vector(31 downto 0)
+            );
     end component;
     
     component control
@@ -36,7 +48,8 @@ architecture behavioral of circuito is
             reg_mux     : out std_logic;    -- Multiplexer leading to every register
             reg_enable  : out std_logic_vector (5 downto 0);    -- Enable of the 6 registers
             addr        : out std_logic_vector (9 downto 0);    -- Counter used to address memory
-            write_en    : out std_logic     -- Write enable
+            write_en    : out std_logic;     -- Write enable
+            done        : out std_logic      -- Done Signal
         );  
     end component;
     
@@ -69,16 +82,18 @@ architecture behavioral of circuito is
     -- Input multiplexers of the registers (to select arith unit or ABCDF)
     signal reg_mux : std_logic; 
     signal reg_enable : std_logic_vector(5 downto 0);
-    -- Input data form MemIN to the datapath
+    -- Input data from MemIN to the datapath
     signal A_in: std_logic_vector (15 downto 0);
     signal B_in: std_logic_vector (15 downto 0);
     signal C_in: std_logic_vector (15 downto 0);
     signal D_in: std_logic_vector (15 downto 0);
     signal E_in: std_logic_vector (15 downto 0);
     signal F_in: std_logic_vector (15 downto 0);
-
+    -- Output data from Control Unit to MemOUT
+    signal we_buf : std_logic;
     -- Memory address
     signal addr_buf : std_logic_vector (9 downto 0);
+    signal res_buf : std_logic_vector (31 downto 0);
     
 begin
     mem_in : MemIN port map(
@@ -92,6 +107,14 @@ begin
         F => F_in
     );
     
+    mem_out : MemOUT port map(
+            clk   => clk,
+            addr  => addr_buf,
+            we    => we_buf,
+            dataIN => res_buf, 
+            dataOUT => dataOUT
+            );
+    
     inst_control : control port map(
         clk => clk,
         reset => reset,
@@ -104,7 +127,9 @@ begin
         alu1_mux1 => alu1_mux1,
         reg_mux => reg_mux,
         reg_enable => reg_enable,
-        addr => addr_buf
+        addr => addr_buf,
+        write_en => we_buf,
+        done => done
     );
     inst_datapath : datapath port map(
         A => A_in,
@@ -124,10 +149,11 @@ begin
         alu1_mux1 => alu1_mux1,
         reg_mux => reg_mux,
         reg_enable => reg_enable,
-        res => res
+        res => res_buf
     );
     
     addr <= addr_buf;
+    we   <= we_buf;
 
 end Behavioral;
 

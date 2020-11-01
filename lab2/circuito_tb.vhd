@@ -10,24 +10,30 @@ architecture Behavioral of circuito_tb is
         port (
             clk     : in  std_logic;
             reset   : in std_logic;                         -- Reset signal
-            res     : out std_logic_vector (31 downto 0);    -- 32 bits determinant
-            addr    : out std_logic_vector (9 downto 0)    
-        ); 
+            done    : out std_logic;                        -- Done Signal
+            addr    : out std_logic_vector (9 downto 0);    
+            dataOUT : out std_logic_vector (31 downto 0);   -- 32 bits determinant
+            we      : out std_logic                         -- Write enable 
+            ); 
     end component;
         
     signal clk_in : std_logic;
     signal reset : std_logic := '1';
-    signal res : std_logic_vector (31 downto 0);
+    signal dataOUT : std_logic_vector (31 downto 0);
     signal addr : std_logic_vector (9 downto 0);
+    signal done : std_logic := '0';
+    signal we : std_logic := '0';
 
     CONSTANT clk_period : time := 10 ns;
 begin
 
     uut: circuito port map(
-        clk => clk_in,
-        reset => reset,
-        res => res, 
-        addr => addr
+        clk     => clk_in,
+        reset   => reset,
+        dataOUT => dataOUT, 
+        addr    => addr,
+        done    => done,
+        we      => we
     );
 
     clk_process : PROCESS
@@ -38,14 +44,14 @@ begin
         WAIT FOR clk_period/2;
     END PROCESS;
 
-    stim_proc : process
+   stim_proc : process
     begin
         wait for 100ns;
 
         reset <= '1';
         wait for 50ns;
         reset <= '0';
-        wait;
+       wait;
     end process;
 
 end Behavioral;
