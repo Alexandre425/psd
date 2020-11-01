@@ -8,9 +8,9 @@ entity circuito is
         clk     : in  std_logic;
         reset   : in std_logic;                         -- Reset signal
         done    : out std_logic;                        -- Done Signal
-        addr    : out std_logic_vector (9 downto 0);    
+        addr    : out std_logic_vector (9 downto 0);
         dataOUT : out std_logic_vector (31 downto 0);   -- 32 bits determinant
-        we      : out std_logic                         -- Write enable output 
+        we      : out std_logic                         -- Write enable output
     );
 end circuito;
 
@@ -23,7 +23,7 @@ architecture behavioral of circuito is
             A, B, C, D, E, F : out std_logic_vector(15 downto 0)
         );
     end component;
-    
+
     component memOUT is
         port (
             clk     : in  std_logic;
@@ -33,7 +33,7 @@ architecture behavioral of circuito is
             dataOUT : out  std_logic_vector(31 downto 0)
             );
     end component;
-    
+
     component control
         port (
             clk         : in  std_logic;
@@ -41,7 +41,7 @@ architecture behavioral of circuito is
             alu1_op     : out alu_operation;
             alu2_op     : out alu_operation;
             mult1_mux1  : out std_logic;    -- Multiplexer of the first operand of the first multiplier
-            mult1_mux2  : out std_logic_vector (1 downto 0);    
+            mult1_mux2  : out std_logic_vector (1 downto 0);
             mult2_mux1  : out std_logic;    -- Multiplexer of the first operand of the second multiplier
             mult2_mux2  : out std_logic;
             alu1_mux1   : out std_logic;
@@ -50,37 +50,37 @@ architecture behavioral of circuito is
             addr        : out std_logic_vector (9 downto 0);    -- Counter used to address memory
             write_en    : out std_logic;     -- Write enable
             done        : out std_logic      -- Done Signal
-        );  
+        );
     end component;
-    
+
     component datapath
-        port( 
+        port(
             A, B, C, D, E, F : in std_logic_vector (15 downto 0); -- Input data from memory
             alu1_op : in alu_operation;
             alu2_op : in alu_operation;
             clk, rst: in std_logic; --Clock, reset
             mult1_mux1  : in std_logic;    -- Multiplexer of the first operand of the first multiplier
-            mult1_mux2  : in std_logic_vector (1 downto 0);    
+            mult1_mux2  : in std_logic_vector (1 downto 0);
             mult2_mux1  : in std_logic;    -- Multiplexer of the first operand of the second multiplier
             mult2_mux2  : in std_logic;
             alu1_mux1   : in std_logic;
             reg_mux     : in std_logic;    -- Multiplexer leading to every register
             reg_enable  : in std_logic_vector (5 downto 0);     -- Enable of the 6 registers
-            res : out std_logic_vector (31 downto 0)
-            ); 
+            res : out signed (31 downto 0)
+            );
     end component;
 
     -- Operation selection for the ALU
     signal slctALU1   : alu_operation;
     signal slctALU2   : alu_operation;
     -- Input multiplexers
-    signal mult1_mux1  : std_logic; 
-    signal mult1_mux2  : std_logic_vector(1 downto 0); 
+    signal mult1_mux1  : std_logic;
+    signal mult1_mux2  : std_logic_vector(1 downto 0);
     signal mult2_mux1  : std_logic;
-    signal mult2_mux2  : std_logic; 
-    signal alu1_mux1  : std_logic; 
+    signal mult2_mux2  : std_logic;
+    signal alu1_mux1  : std_logic;
     -- Input multiplexers of the registers (to select arith unit or ABCDF)
-    signal reg_mux : std_logic; 
+    signal reg_mux : std_logic;
     signal reg_enable : std_logic_vector(5 downto 0);
     -- Input data from MemIN to the datapath
     signal A_in: std_logic_vector (15 downto 0);
@@ -94,7 +94,7 @@ architecture behavioral of circuito is
     -- Memory address
     signal addr_buf : std_logic_vector (9 downto 0);
     signal res_buf : std_logic_vector (31 downto 0);
-    
+
 begin
     mem_in : MemIN port map(
         clk => clk,
@@ -106,21 +106,21 @@ begin
         E => E_in,
         F => F_in
     );
-    
+
     mem_out : MemOUT port map(
             clk   => clk,
             addr  => addr_buf,
             we    => we_buf,
-            dataIN => res_buf, 
+            dataIN => res_buf,
             dataOUT => dataOUT
             );
-    
+
     inst_control : control port map(
         clk => clk,
         reset => reset,
         alu1_op => slctALU1,
         alu2_op => slctALU2,
-        mult1_mux1 => mult1_mux1,   
+        mult1_mux1 => mult1_mux1,
         mult1_mux2 => mult1_mux2,
         mult2_mux1 => mult2_mux1,
         mult2_mux2 => mult2_mux2,
@@ -142,7 +142,7 @@ begin
         alu2_op => slctALU2,
         clk => clk,
         rst => reset,
-        mult1_mux1 => mult1_mux1,   
+        mult1_mux1 => mult1_mux1,
         mult1_mux2 => mult1_mux2,
         mult2_mux1 => mult2_mux1,
         mult2_mux2 => mult2_mux2,
@@ -151,9 +151,8 @@ begin
         reg_enable => reg_enable,
         res => res_buf
     );
-    
+
     addr <= addr_buf;
     we   <= we_buf;
 
 end Behavioral;
-

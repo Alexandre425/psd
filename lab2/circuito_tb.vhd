@@ -1,22 +1,23 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 use work.common.all;
 
 entity circuito_tb is
 end circuito_tb;
-    
+
 architecture Behavioral of circuito_tb is
     component circuito
         port (
             clk     : in  std_logic;
             reset   : in std_logic;                         -- Reset signal
             done    : out std_logic;                        -- Done Signal
-            addr    : out std_logic_vector (9 downto 0);    
+            addr    : out std_logic_vector (9 downto 0);
             dataOUT : out std_logic_vector (31 downto 0);   -- 32 bits determinant
-            we      : out std_logic                         -- Write enable 
-            ); 
+            we      : out std_logic                         -- Write enable
+            );
     end component;
-        
+
     signal clk_in : std_logic;
     signal reset : std_logic := '1';
     signal dataOUT : std_logic_vector (31 downto 0);
@@ -30,7 +31,7 @@ begin
     uut: circuito port map(
         clk     => clk_in,
         reset   => reset,
-        dataOUT => dataOUT, 
+        dataOUT => dataOUT,
         addr    => addr,
         done    => done,
         we      => we
