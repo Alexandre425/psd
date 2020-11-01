@@ -7,7 +7,7 @@ entity circuito is
     port (
         clk     : in  std_logic;
         reset   : in std_logic;                         -- Reset signal
-        res     : out std_logic_vector (31 downto 0);    -- 32 bits determinant
+        res     : out signed (31 downto 0);    -- 32 bits determinant
         addr    : out std_logic_vector (9 downto 0)    
     );
 end circuito;
@@ -53,7 +53,7 @@ architecture behavioral of circuito is
             alu1_mux1   : in std_logic;
             reg_mux     : in std_logic;    -- Multiplexer leading to every register
             reg_enable  : in std_logic_vector (5 downto 0);     -- Enable of the 6 registers
-            res : out std_logic_vector (31 downto 0)
+            res : out signed (31 downto 0)
             ); 
     end component;
 

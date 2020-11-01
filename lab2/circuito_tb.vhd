@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 use work.common.all;
 
 entity circuito_tb is
@@ -10,14 +11,14 @@ architecture Behavioral of circuito_tb is
         port (
             clk     : in  std_logic;
             reset   : in std_logic;                         -- Reset signal
-            res     : out std_logic_vector (31 downto 0);    -- 32 bits determinant
+            res     : out signed(31 downto 0);    -- 32 bits determinant
             addr    : out std_logic_vector (9 downto 0)    
         ); 
     end component;
         
     signal clk_in : std_logic;
     signal reset : std_logic := '1';
-    signal res : std_logic_vector (31 downto 0);
+    signal res : signed(31 downto 0);
     signal addr : std_logic_vector (9 downto 0);
 
     CONSTANT clk_period : time := 10 ns;

@@ -5,9 +5,9 @@ use work.common.all;
 
 entity alu is
     port(
-        operand1, operand2 : in std_logic_vector (31 downto 0);  -- Operands
+        operand1, operand2 : in signed (31 downto 0);  -- Operands
         operator : in alu_operation;                   -- Operator
-        result : out std_logic_vector (31 downto 0)              -- Result of operation
+        result : out signed (31 downto 0)              -- Result of operation
     );
 end alu;
 
@@ -23,8 +23,8 @@ begin
     -- Output multiplexing
     with operator select
         result <=
-            std_logic_vector(add_out)   when ALU_ADD,
-            std_logic_vector(sub_out)   when ALU_SUB, 
+            (add_out)   when ALU_ADD,
+            (sub_out)   when ALU_SUB, 
            	(others => '0')             when others;    
     
 end Behavioral;
@@ -36,16 +36,16 @@ use work.common.all;
 
 entity multiplier is
 	port (
-        operand1, operand2 : in std_logic_vector (31 downto 0);
-        result : out std_logic_vector (31 downto 0)
+        operand1, operand2 : in signed (31 downto 0);
+        result : out signed (31 downto 0)
     );
 end multiplier;
 
 architecture arch of multiplier is
 
-signal result64 : std_logic_vector(63 downto 0);
+signal result64 : signed (63 downto 0);
 
 begin
-   result64 <= std_logic_vector(signed(operand1) * signed(operand2));
+   result64 <= signed(operand1) * signed(operand2);
    result <= result64(31 downto 0);
 end arch ;
