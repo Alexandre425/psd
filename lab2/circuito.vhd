@@ -66,7 +66,7 @@ architecture behavioral of circuito is
             alu1_mux1   : in std_logic;
             reg_mux     : in std_logic;    -- Multiplexer leading to every register
             reg_enable  : in std_logic_vector (5 downto 0);     -- Enable of the 6 registers
-            res : out signed (31 downto 0)
+            res : out std_logic_vector (31 downto 0)
             );
     end component;
 
