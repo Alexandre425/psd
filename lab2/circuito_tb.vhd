@@ -11,11 +11,11 @@ architecture Behavioral of circuito_tb is
         port (
             clk     : in  std_logic;
             reset   : in std_logic;                         -- Reset signal
-            done    : out std_logic;                        -- Done Signal
+            done    : buffer std_logic;                        -- Done Signal
             addr    : out std_logic_vector (9 downto 0);
             dataOUT : out std_logic_vector (31 downto 0);   -- 32 bits determinant
             we      : out std_logic                         -- Write enable
-            );
+        );
     end component;
 
     signal clk_in : std_logic;
@@ -47,11 +47,14 @@ begin
 
    stim_proc : process
     begin
-        wait for 100ns;
-
         reset <= '1';
         wait for 50ns;
         reset <= '0';
+        wait for 500ns;
+        reset <= '1';
+        wait for 50ns;
+        reset <= '0';
+
        wait;
     end process;
 

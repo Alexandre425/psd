@@ -7,7 +7,7 @@ entity circuito is
     port (
         clk     : in  std_logic;
         reset   : in std_logic;                         -- Reset signal
-        done    : out std_logic;                        -- Done Signal
+        done    : buffer std_logic;                     -- Done Signal
         addr    : out std_logic_vector (9 downto 0);
         dataOUT : out std_logic_vector (31 downto 0);   -- 32 bits determinant
         we      : out std_logic                         -- Write enable output
@@ -49,7 +49,7 @@ architecture behavioral of circuito is
             reg_enable  : out std_logic_vector (5 downto 0);    -- Enable of the 6 registers
             addr        : out std_logic_vector (9 downto 0);    -- Counter used to address memory
             write_en    : out std_logic;     -- Write enable
-            done        : out std_logic      -- Done Signal
+            done        : buffer std_logic      -- Done Signal
         );
     end component;
 
@@ -108,12 +108,12 @@ begin
     );
 
     mem_out : MemOUT port map(
-            clk   => clk,
-            addr  => addr_buf,
-            we    => we_buf,
-            dataIN => res_buf,
-            dataOUT => dataOUT
-            );
+        clk   => clk,
+        addr  => addr_buf,
+        we    => we_buf,
+        dataIN => res_buf,
+        dataOUT => dataOUT
+    );
 
     inst_control : control port map(
         clk => clk,

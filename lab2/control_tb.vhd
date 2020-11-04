@@ -72,6 +72,10 @@ begin
         reset <= '1';
         wait for 50ns;
         reset <= '0';
+        wait for 500ns;
+        reset <= '1';
+        wait for 50ns;
+        reset <= '0';
         wait;
     end process;
 

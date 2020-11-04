@@ -19,7 +19,7 @@ entity control is
         reg_enable  : out std_logic_vector (5 downto 0);    -- Enable of the 6 registers
         addr        : out std_logic_vector (9 downto 0);    -- Counter used to address memory
         write_en    : out std_logic;    -- Write enable
-        done        : out std_logic      -- Done Signal
+        done        : buffer std_logic  -- Done Signal
     ); 
 end control;
     
@@ -32,7 +32,8 @@ architecture behavioral of control is
         S_CYCLE3,
         S_CYCLE4,
         S_WRITE,    -- Stores the result into memory
-        S_ADDR_INC  -- Increments the memory address
+        S_ADDR_INC, -- Increments the memory address
+        S_DATA_WAIT -- Waits for the data from MemIN to become available
     );
     signal state : fsm_states;
     signal counter : unsigned (9 downto 0);
@@ -52,9 +53,9 @@ begin
             if reset = '1' then
                 counter <= "0000000000";
                 done    <= '0';
-            elsif state = S_ADDR_INC then
+            elsif state = S_WRITE then
                 counter <= counter + 1;
-                if counter = "0000010000" then
+                if counter = "0000001111" then
                     done <= '1';                --All the determinants have been calculated
                 end if;
             end if;
@@ -65,8 +66,8 @@ begin
 
     process (clk, reset)
     begin
-        if reset = '1' then
-            state <= S_LOAD;
+        if reset = '1' or done = '1' then   -- If resetting or done, wait indefinitely
+            state <= S_DATA_WAIT;
         elsif clk'event and clk = '1' then
             case state is
                 when S_LOAD =>
@@ -86,6 +87,8 @@ begin
                 when S_WRITE =>
                     state <= S_ADDR_INC;
                 when S_ADDR_INC =>
+                    state <= S_DATA_WAIT;
+                when S_DATA_WAIT =>
                     state <= S_LOAD;
             end case;
         end if;                
@@ -161,6 +164,17 @@ begin
                 reg_enable <= "000000";
                 write_en <= '1';
             when S_ADDR_INC =>
+                alu1_op <= ALU_ADD;
+                alu2_op <= ALU_ADD;
+                mult1_mux1 <= 'X';
+                mult1_mux2 <= "XX";
+                mult2_mux1 <= 'X';
+                mult2_mux2 <= 'X';
+                alu1_mux1 <= 'X';
+                reg_mux <= 'X';
+                reg_enable <= "XXXXXX";
+                write_en <= '0';
+            when S_DATA_WAIT =>
                 alu1_op <= ALU_ADD;
                 alu2_op <= ALU_ADD;
                 mult1_mux1 <= 'X';
