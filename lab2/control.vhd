@@ -66,12 +66,13 @@ begin
 
     process (clk, reset)
     begin
-        if reset = '1' or done = '1' then   -- If resetting or done, wait indefinitely
-            state <= S_DATA_WAIT;
-        elsif clk'event and clk = '1' then
+        if clk'event and clk = '1' then
+            if reset = '1' then   -- If resetting or done, wait indefinitely
+                state <= S_DATA_WAIT;
+            end if;
             case state is
                 when S_LOAD =>
-                    if reset = '0' then     -- Wait for reset to stop being pressed
+                    if reset = '0' or done = '1' then     -- Wait for reset to stop being pressed
                         state <= S_CYCLE1;
                     else
                         state <= S_LOAD;
@@ -87,7 +88,11 @@ begin
                 when S_WRITE =>
                     state <= S_ADDR_INC;
                 when S_ADDR_INC =>
-                    state <= S_DATA_WAIT;
+                    if done = '1' then
+                        state <= S_LOAD;
+                    else
+                        state <= S_DATA_WAIT;
+                    end if;
                 when S_DATA_WAIT =>
                     state <= S_LOAD;
             end case;
