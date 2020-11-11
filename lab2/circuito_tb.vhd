@@ -25,7 +25,7 @@ architecture Behavioral of circuito_tb is
     signal done : std_logic := '0';
     signal we : std_logic := '0';
 
-    CONSTANT clk_period : time := 10 ns;
+    CONSTANT clk_period : time := 15 ns;
 begin
 
     uut: circuito port map(
@@ -47,14 +47,12 @@ begin
 
    stim_proc : process
     begin
-        reset <= '1';
-        wait for 50ns;
         reset <= '0';
-        wait for 500ns;
+        wait for clK_period*10;
         reset <= '1';
-        wait for 50ns;
+        wait for clK_period*10;
         reset <= '0';
-
+        
        wait;
     end process;
 
