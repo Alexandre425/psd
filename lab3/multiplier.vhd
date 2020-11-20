@@ -93,9 +93,6 @@ begin
     add : fp_adder
         generic map (I => 14, F => 18);
         port map    (
-            -- Q10.14 to Q14.18 conversion
-            -- Pad the int part with the signal
-            -- Pad the end of the fractional part with zeros
             operand1 => ad(23)&ad(23)&ad(23)&ad(23) & ad(23 downto 0) & (others=>0),
             operand2 => bc(23)&bc(23)&bc(23)&bc(23) & bc(23 downto 0) & (others=>0),
             result => result_i
