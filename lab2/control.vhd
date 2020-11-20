@@ -72,7 +72,7 @@ begin
             end if;
             case state is
                 when S_LOAD =>
-                    if reset = '0' or done = '1' then     -- Wait for reset to stop being pressed
+                    if reset = '0' and done = '0' then     -- Wait for reset to stop being pressed
                         state <= S_CYCLE1;
                     else
                         state <= S_LOAD;
