@@ -8,7 +8,7 @@ entity fp_multiplier is
     );
     port(
         operand1, operand2 : in std_logic_vector (I+F-1 downto 0);  -- Operands
-        result : out std_logic_vector (I*2 + F*2 + 1 downto 0)      -- Result of operation
+        result : out std_logic_vector (I*2 + F*2 - 1 downto 0)      -- Result of operation
     );
 end fp_multiplier;
 
@@ -24,41 +24,38 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity comp_fp_multiplier is
-    generic (
-        I : integer := 5; F : integer := 7
-    );
     port(
-        operand1_r, operand1_i, operand2_r, operand2_i : in std_logic_vector (I+F-1 downto 0);  -- Operands
-        result_r, result_i : out std_logic_vector (I*2 + F*2 + 1 downto 0)          -- Result of operation
+        operand1_r, operand1_i, operand2_r, operand2_i : in std_logic_vector (11 downto 0);  -- Operands
+        result_r, result_i : out std_logic_vector (31 downto 0) -- Result of operation
     );
 end comp_fp_multiplier;
 
 architecture behavioral of comp_fp_multiplier is
     component fp_multiplier
-        generic (
+        generic(
             I : integer := 5; F : integer := 7
         );
         port(
             operand1, operand2 : in std_logic_vector (I+F-1 downto 0);  -- Operands
-            result : out std_logic_vector (I*2 + F*2 + 1 downto 0)      -- Result of operation
+            result : out std_logic_vector (I*2 + F*2 - 1 downto 0)      -- Result of operation
         );
     end component;
     component fp_adder
-        generic (
+        generic(
             I : integer := 5; F : integer := 7
         );
         port(
             operand1, operand2 : in std_logic_vector (I+F-1 downto 0);  -- Operands
-            result : out std_logic_vector (I*2 + F*2 + 1 downto 0)      -- Result of operation
+            result : out std_logic_vector (I+F-1 downto 0)      -- Result of operation
         );
     end component;
     component fp_subtractor
-        generic (
+        generic(
             I : integer := 5; F : integer := 7
         );
         port(
             operand1, operand2 : in std_logic_vector (I+F-1 downto 0);  -- Operands
-            result : out std_logic_vector (I*2 + F*2 + 1 downto 0)      -- Result of operation
+            result : out std_logic_vector (I+F-1 downto 0)      -- Result of operation
         );
     end component;
 
@@ -88,13 +85,10 @@ begin
     sub : fp_subtractor
         generic map (I => 14, F => 18)
         port map    (
-            -- Q10.14 to Q14.18 conversion
-            -- Pad the int part with the signal
-            -- Pad the end of the fractional part with zeros
-            operand1 => ac32,
-            operand2 => bd32,
-            result => result_r
-        );
+                operand1 => ac32,
+                operand2 => bd32,
+                result => result_r
+            );
     add : fp_adder
         generic map (I => 14, F => 18)
         port map    (
@@ -102,7 +96,10 @@ begin
             operand2 => bc32,
             result => result_i
         );
-
+            
+    -- Q10.14 to Q14.18 conversion
+    -- Pad the int part with the signal
+    -- Pad the end of the fractional part with zeros
     ac32 <= ac(23)&ac(23)&ac(23)&ac(23) & ac(23 downto 0) & "0000";
     bd32 <= bd(23)&bd(23)&bd(23)&bd(23) & bd(23 downto 0) & "0000";
     ad32 <= ad(23)&ad(23)&ad(23)&ad(23) & ad(23 downto 0) & "0000";

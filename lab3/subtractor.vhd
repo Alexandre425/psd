@@ -8,7 +8,7 @@ entity fp_subtractor is
     );
     port(
         operand1, operand2 : in std_logic_vector (I+F-1 downto 0);  -- Operands
-        result : out std_logic_vector (I*2 + F*2 + 1 downto 0)      -- Result of operation
+        result : out std_logic_vector (I+F-1 downto 0)      -- Result of operation
     );
 end fp_subtractor;
 
