@@ -18,24 +18,28 @@ end entity control;
 
 architecture behavioral of control is
     type fsm_states is(
-        S_START,            -- Start of the calculations, then after 4 steps ->
-        S_UNLOCK_MIN_MAX,   -- Unlock the max and min calculators (data has reached the third layer)
-        S_SAVE_AVG,         -- After the last det passes through the second layer, save the average
-        S_SAVE_IDX,         -- After it passes through the third, save the indexes
-        S_DONE              -- After that, stay here forever to prevent overwritting the saved values
+        S_RESET,            -- Resets registers
+        -- First latency cycle
+        S_LAT_LOAD_A,       -- Loads +inf and -inf in the minmax registers, loads A
+        S_LAT_LOAD_B,       -- Loads B ...
+        S_LAT_LOAD_C,
+        S_LAT_LOAD_D,
+        -- After latency, full pipelining, load in parallel with processing
+        S_LOAD_A,   -- Increments idx, loads A
+        S_LOAD_B,   -- Loads B
+        S_LOAD_C,   -- Loads C and saves the determinant and accumulator
+        S_LOAD_D    -- Loads D and stores the minmax vals and indexes
     );
     signal state : fsm_states;
-    signal counter, counter_offset : unsigned (2 downto 0);
-
+    signal matrix_counter :     unsigned (2 downto 0);  -- From 0 to 7, = idx of the matrix being processed  
 begin
 
     process (clk, reset)
     begin
         if clk'event and clk = '1' then
-            if reset = '1' then                     -- Set both to 0 on a reset
-                counter <= (others => '0');
-                counter_offset <= (others => '0');
-            else
+            if reset = '1' then                         -- On a reset
+                matrix_counter <= (others => "111");    -- So it overflows when LOAD_A is active for the first time 
+            else if state = S_LOAD_A then               
                 counter <= counter + 1;             -- Otherwise increment the counter
                 if state /= S_START then         -- Increment the offset counter when data reaches third layer
                     counter_offset <= counter_offset + 1;

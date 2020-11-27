@@ -1,6 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
 
 -- Evaluates operand1 > operand2
 entity comparator is
@@ -15,5 +15,5 @@ end comparator;
 
 architecture behavioral of comparator is
 begin
-    result <= std_logic(signed(operand1) > signed(operand2));
+    result <= std_logic(unsigned(operand1) > unsigned(operand2));
 end behavioral;

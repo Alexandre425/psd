@@ -9,7 +9,7 @@ entity datapath is
         clk :       in std_logic;
         reset :     in std_logic;
         data_in :   in complex_matrix;
-        max_sel :   in std_logic;   -- Controls wether the max/min regs get loaded with +inf/-inf
+        accum_write_en, idx_enable :   in std_logic;    -- Enables key registers and memories
         idx_offset: in std_logic_vector (2 downto 0);   -- Index of the value in the comparison layer
 
         min_idx_out, max_idx_out :	out std_logic_vector (2 downto 0);  -- The indexes of the matrices with the min and max det
@@ -51,7 +51,7 @@ architecture behavioral of datapath is
             N : integer := 12
         );
         port(
-            clk, reset : in std_logic;
+            clk, reset, enable : in std_logic;
             D : in std_logic_vector (N-1 downto 0);
             Q : out std_logic_vector (N-1 downto 0)
         );
@@ -104,7 +104,7 @@ begin
         reg_array1: reg
             generic map (N => 12)
             port map (
-                clk => clk, reset => reset,
+                clk => clk, reset => reset, enable <= '1',
                 D   => data_in(I),
                 Q   => reg_array1_in(I)
             );
@@ -135,7 +135,7 @@ begin
         reg_array2 : reg
             generic map (N => 32)
             port map (
-                clk => clk, reset => reset,
+                clk => clk, reset => reset, enable <= '1';
                 D   => reg_array2_in(I),
                 Q   => reg_array2_out(I)
             );
@@ -146,7 +146,7 @@ begin
         reg_accum : reg
             generic map (N => 32)
             port map (
-                clk => clk, reset => reset,
+                clk => clk, reset => reset, enable <= accum_write_en;
                 D   => accum_array_in(I),
                 Q   => accum_array_out(I)
             );
@@ -174,6 +174,31 @@ begin
     avg_det_i <= std_logic_vector(shift_right(signed(accum_array_out(1)),3));
 
     -- Third layer
+    -- Registers
+    reg3_gen : for I in 0 to 1 generate
+        reg_array3 : reg
+            generic map (N => 32)
+            port map (
+                clk => clk, reset => reset, enable <= '1';
+                D   => reg_array3_in(I),
+                Q   => reg_array3_out(I)
+            );
+        reg_minmax : reg
+            generic map (N => 32)
+            port map (
+                clk => clk, reset => reset, enable <= idx_enable;
+                D   => minmax_array_in(I),
+                Q   => minmax_array_out(I)
+            );
+        reg_idx : reg
+            generic map (N => 3)
+            port map (
+                clk => clk, reset => reset, enable <= idx_enable;
+                D   => idx_array_in(I),
+                Q   => idx_array_out(I)
+            );
+    end generate;
+
     -- The abs value adder
     accum : fp_adder
         generic map (I => 14, F => 18)
