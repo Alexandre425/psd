@@ -10,7 +10,10 @@ entity datapath is
         reset :     in std_logic;
         data_in :   in complex_matrix;
         max_sel :   in std_logic;   -- Controls wether the max/min regs get loaded with +inf/-inf
-        idx_offset: in std_logic_vector (2 downto 0)    -- Index of the value in the comparison layer
+        idx_offset: in std_logic_vector (2 downto 0);   -- Index of the value in the comparison layer
+
+        min_idx_out, max_idx_out :	out std_logic_vector (2 downto 0);  -- The indexes of the matrices with the min and max det
+        avg_det_r, avg_det_i :  	out std_logic_vector (31 downto 0)  -- Average of the determinant
     );
 end entity datapath;
 
@@ -48,7 +51,7 @@ architecture behavioral of datapath is
             N : integer := 12
         );
         port(
-            clk : in std_logic;
+            clk, reset : in std_logic;
             D : in std_logic_vector (N-1 downto 0);
             Q : out std_logic_vector (N-1 downto 0)
         );
@@ -101,7 +104,7 @@ begin
         reg_array1: reg
             generic map (N => 12)
             port map (
-                clk => clk,
+                clk => clk, reset => reset,
                 D   => data_in(I),
                 Q   => reg_array1_in(I)
             );
@@ -132,7 +135,7 @@ begin
         reg_array2 : reg
             generic map (N => 32)
             port map (
-                clk => clk,
+                clk => clk, reset => reset,
                 D   => reg_array2_in(I),
                 Q   => reg_array2_out(I)
             );
@@ -143,7 +146,7 @@ begin
         reg_accum : reg
             generic map (N => 32)
             port map (
-                clk => clk,
+                clk => clk, reset => reset,
                 D   => accum_array_in(I),
                 Q   => accum_array_out(I)
             );
@@ -165,8 +168,10 @@ begin
             );
         -- Taking the absolute value of the determinant (of the real and imaginary parts)
         reg_array3_in(I) <= std_logic_vector(abs(signed(sub_out(I))));
-
     end generate accum_gen;
+    -- Outputting the accumulator divided by 8
+    avg_det_r <= std_logic_vector(shift_right(signed(accum_array_out(0)),3));
+    avg_det_i <= std_logic_vector(shift_right(signed(accum_array_out(1)),3));
 
     -- Third layer
     -- The abs value adder
@@ -209,6 +214,9 @@ begin
     with max_cmp select idx_array_in(MIN_IDX) <=
         idx_array_out(MIN_IDX)  when '0',   -- Don't update the index
         idx_offset              when '1';   -- Update it
+    -- Outputting the indexes
+    min_idx_out <= idx_array_out(MIN_IDX);
+    max_idx_out <= idx_array_out(MAX_IDX);
 
     
 end architecture behavioral;
