@@ -10,8 +10,9 @@ entity datapath is
         reset :         in std_logic;
         a, b, c, d :    in std_logic_vector (31 downto 0);  -- Matrix values
         idx:            in std_logic_vector (2 downto 0);
-        min_idx_out, max_idx_out :	out std_logic_vector (2 downto 0);  -- The indexes of the matrices with the min and max det
-        avg_det :       out complex_num     -- Average of the determinant
+        min_idx_out :   out std_logic_vector (2 downto 0);  -- Index of the matrix with the smallest determinant
+        max_idx_out :	out std_logic_vector (2 downto 0);  -- With the largest
+        avg_det :       out complex_num                     -- Average of the determinant
     );
 end entity datapath;
 

@@ -7,72 +7,72 @@ use work.common.all;
 entity control is
     port (
         clk :       in std_logic;
+        start :     in std_logic;
         reset :     in std_logic;
-        max_sel :   out std_logic;      -- Controls wether the max/min regs get loaded with +inf/-inf
-        save_avg :  out std_logic;      -- Wether the average should be saved to the circuit buffer
-        save_idx :  out std_logic;      -- Wether the indexes should be saved to the circuit buffer
-        idx :       out std_logic_vector (2 downto 0);
-        idx_offset: out std_logic_vector (2 downto 0)   -- Index of the value in the comparison layer
+        buffer_fwd: out std_logic;  -- Forward the data from the buffer to the datapath
+        addr :      out std_logic_vector (7 downto 0);  -- Memory address
+        idx:        out std_logic_vector (2 downto 0)   -- Index of the matrix
     );
 end entity control;
 
 architecture behavioral of control is
     type fsm_states is(
-        S_RESET,            -- Resets registers
-        -- First latency cycle
-        S_LAT_LOAD_A,       -- Loads +inf and -inf in the minmax registers, loads A
-        S_LAT_LOAD_B,       -- Loads B ...
-        S_LAT_LOAD_C,
-        S_LAT_LOAD_D,
-        -- After latency, full pipelining, load in parallel with processing
-        S_LOAD_A,   -- Increments idx, loads A
-        S_LOAD_B,   -- Loads B
-        S_LOAD_C,   -- Loads C and saves the determinant and accumulator
-        S_LOAD_D    -- Loads D and stores the minmax vals and indexes
+        S_WAIT,         -- Wait until the start button is pressed
+        S_WAIT_RELEASE, -- Wait for the button to be released
+        S_FIRST_LOAD_A, -- Load A into the first buffer, runs only for the first cycle
+        S_LOAD_A,       -- Load A and pass the ABCD values from the first to the second buffer
+        S_LOAD_B,       -- Load B, so on...
+        S_LOAD_C,
+        S_LOAD_D,
     );
     signal state : fsm_states;
-    signal matrix_counter :     unsigned (2 downto 0);  -- From 0 to 7, = idx of the matrix being processed  
+    signal idx_counter :    unsigned (2 downto 0);  -- Counts matrices 
+    signal addr_counter :   unsigned (7 downto 0);  -- Counts memory addresses
 begin
 
     process (clk, reset)
     begin
         if clk'event and clk = '1' then
             if reset = '1' then                         -- On a reset
-                matrix_counter <= (others => "111");    -- So it overflows when LOAD_A is active for the first time 
-            else if state = S_LOAD_A then               
-                counter <= counter + 1;             -- Otherwise increment the counter
-                if state /= S_START then         -- Increment the offset counter when data reaches third layer
-                    counter_offset <= counter_offset + 1;
-                end if;
+                idx_counter     <= (others => "000");   -- Reset the counters
+                addr_counter    <= (others => "00000000");
+            else if state = S_LOAD_A then               -- When loading A from the next matrix
+                idx_counter <= idx_counter + 1;         -- Increment the matrix count
+            else if state /= S_WAIT then                -- When loading any value
+                addr_counter <= addr_counter + 1;       -- Increment the adress
             end if;
         end if;
     end process;
 
     -- Outputting the counters
-    idx <= std_logic_vector(counter);
-    idx_offset <= std_logic_vector(counter_offset);
+    idx     <= std_logic_vector(idx_counter);
+    addr    <= std_logic_vector(addr_counter);
 
     process (clk, reset)
     begin
         if clk'event and clk = '1' then
             if reset = '1' then     -- Synchronous reset
-                state <= S_START;
+                state <= S_WAIT;
             else                    -- If not reset
                 case state is       -- Next state depends on state and counter
-                    when S_START =>
-                        if counter = "011" then
-                            state <= S_UNLOCK_MIN_MAX;  -- Data reaches third layer
+                    when S_WAIT =>
+                        if start = '1' then
+                            state <= S_WAIT_RELEASE;
                         end if;
-                    when S_UNLOCK_MIN_MAX =>
-                        if counter = "010" then
-                            state <= S_SAVE_AVG;        -- Data passes through second layer
+                    when S_WAIT_RELEASE =>
+                        if start = '0' then
+                            state <= S_FIRST_LOAD_A;
                         end if;
-                    when S_SAVE_AVG =>                  -- NOTE: Counter overflows! so "2" is actually 
-                        state <= S_SAVE_IDX;            --  the 10th cycle
-                    when S_SAVE_IDX =>
-                        state <= S_DONE;
-                    when S_DONE =>
-                        state <= S_DONE;
+                    when S_FIRST_LOAD_A =>
+                        state <= S_LOAD_B;
+                    when S_LOAD_A =>
+                        state <= S_LOAD_B;
+                    when S_LOAD_B =>
+                        state <= S_LOAD_C;
+                    when S_LOAD_C =>
+                        state <= S_LOAD_D;
+                    when S_LOAD_D =>
+                        state <= S_LOAD_A;
                 end case;
          	end if;
 		end if;

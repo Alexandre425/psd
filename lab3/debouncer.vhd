@@ -40,60 +40,60 @@ use IEEE.NUMERIC_STD.all;
 --use IEEE.math_real.all;
 
 entity debouncer is
-  generic (DEBNC_LOG_CLOCKS : integer range 2 to (integer'high) := 8;
-           PORT_WIDTH       : integer range 1 to (integer'high) := 5);
-  port (SIGNAL_I : in  std_logic_vector ((PORT_WIDTH - 1) downto 0);
+    generic (DEBNC_LOG_CLOCKS : integer range 2 to (integer'high) := 8;
+             PORT_WIDTH       : integer range 1 to (integer'high) := 5);
+    port (SIGNAL_I : in  std_logic_vector ((PORT_WIDTH - 1) downto 0);
         CLK_I    : in  std_logic;
         SIGNAL_O : out std_logic_vector ((PORT_WIDTH - 1) downto 0));
 end debouncer;
 
 architecture Behavioral of debouncer is
 
-  constant CNTR_WIDTH_CONST : integer := DEBNC_LOG_CLOCKS;  -- will wait 2**DEBNC_LOG_CLOCKS
-                                                            -- before register
-                                                            -- btn change
-  constant CNTR_MAX_CONST   : std_logic_vector((CNTR_WIDTH_CONST - 1) downto 0)
+    constant CNTR_WIDTH_CONST : integer := DEBNC_LOG_CLOCKS;    -- will wait 2**DEBNC_LOG_CLOCKS
+                                                                -- before register
+                                                                -- btn change
+    constant CNTR_MAX_CONST   : std_logic_vector((CNTR_WIDTH_CONST - 1) downto 0)
     := std_logic_vector(to_unsigned((2**DEBNC_LOG_CLOCKS - 1), CNTR_WIDTH_CONST));
 
-  type VECTOR_ARRAY_TYPE is array (integer range <>) of std_logic_vector((CNTR_WIDTH_CONST - 1) downto 0);
+    type VECTOR_ARRAY_TYPE is array (integer range <>) of std_logic_vector((CNTR_WIDTH_CONST - 1) downto 0);
 
-  signal sig_cntrs_ary : VECTOR_ARRAY_TYPE (0 to (PORT_WIDTH - 1)) := (others => (others => '0'));
+    signal sig_cntrs_ary : VECTOR_ARRAY_TYPE (0 to (PORT_WIDTH - 1)) := (others => (others => '0'));
 
-  signal sig_out_reg : std_logic_vector((PORT_WIDTH - 1) downto 0) := (others => '0');
+    signal sig_out_reg : std_logic_vector((PORT_WIDTH - 1) downto 0) := (others => '0');
 
 begin
 
-  debounce_process : process (CLK_I)
-  begin
+    debounce_process : process (CLK_I)
+    begin
     if (rising_edge(CLK_I)) then
-      for index in 0 to (PORT_WIDTH - 1) loop
+        for index in 0 to (PORT_WIDTH - 1) loop
         if (sig_cntrs_ary(index) = CNTR_MAX_CONST) then
-          sig_out_reg(index) <= not(sig_out_reg(index));
+            sig_out_reg(index) <= not(sig_out_reg(index));
         end if;
-      end loop;
+        end loop;
     end if;
-  end process;
+    end process;
 
-  counter_process : process (CLK_I)
-  begin
+    counter_process : process (CLK_I)
+    begin
     if (rising_edge(CLK_I)) then
-      for index in 0 to (PORT_WIDTH - 1) loop
+        for index in 0 to (PORT_WIDTH - 1) loop
 
         if ((sig_out_reg(index) = '1') xor (SIGNAL_I(index) = '1')) then
-          if (sig_cntrs_ary(index) = CNTR_MAX_CONST) then
+            if (sig_cntrs_ary(index) = CNTR_MAX_CONST) then
             sig_cntrs_ary(index) <= (others => '0');
-          else
+            else
             sig_cntrs_ary(index) <= sig_cntrs_ary(index) + 1;
-          end if;
+            end if;
         else
-          sig_cntrs_ary(index) <= (others => '0');
+            sig_cntrs_ary(index) <= (others => '0');
         end if;
 
-      end loop;
+        end loop;
     end if;
-  end process;
+    end process;
 
-  SIGNAL_O <= sig_out_reg;
+    SIGNAL_O <= sig_out_reg;
 
 end Behavioral;
 
