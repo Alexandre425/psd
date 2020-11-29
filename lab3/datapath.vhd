@@ -8,6 +8,7 @@ entity datapath is
     port (
         clk :           in std_logic;
         reset :         in std_logic;
+        enable :        in std_logic;   -- Enables saving new values to the registers
         a, b, c, d :    in std_logic_vector (31 downto 0);  -- Matrix values
         idx:            in std_logic_vector (2 downto 0);
         min_idx_out :   out std_logic_vector (2 downto 0);  -- Index of the matrix with the smallest determinant
@@ -89,7 +90,9 @@ architecture behavioral of datapath is
     -- Result of the comparisons
     signal max_cmp, min_cmp : std_logic;
     -- To control the enable of the minmax registers
-    signal max_cmp_or_rst, min_cmp_or_rst : std_logic;
+    signal max_reg_en, min_reg_en : std_logic;
+    -- The enable of the min and max index registers
+    signal max_idx_reg_en, min_idx_reg_en : std_logic;
 
 begin
 
@@ -119,7 +122,7 @@ begin
         reg_accum : reg
             generic map (N => 32)
             port map (
-                clk => clk, reset => reset, enable => '1',
+                clk => clk, reset => reset, enable => enable,
                 D   => accum_array_in(I),
                 Q   => accum_array_out(I)
             );
@@ -162,18 +165,22 @@ begin
             operand2    => minmax_array_out(MAX_IDX),
             result      => max_cmp
         );
-    max_cmp_or_rst <= max_cmp or reset;
+    max_reg_en <= (enable and max_cmp) or reset;
+    -- The min and max value registers don't need to reset, as resetting them should load
+    --  the minimum and max values possible, not 0. So the reset bit instead enables them,
+    --  and selects 0 or +inf on their input.
     reg_max : reg
         generic map (N => 32)
         port map (
-            clk => clk, reset => reset, enable => max_cmp_or_rst,   -- Write to the max val register on a new greater val or a reset
+            clk => clk, reset => '0', enable => max_reg_en,   -- Write to the max val register on a new greater val or a reset
             D   => minmax_array_in(MAX_IDX),
             Q   => minmax_array_out(MAX_IDX)
         );
+    max_idx_reg_en <= enable and max_cmp;
     reg_max_idx : reg
         generic map (N => 3)
         port map (
-            clk => clk, reset => reset, enable => max_cmp,
+            clk => clk, reset => reset, enable => max_idx_reg_en,
             D   => idx,
             Q   => idx_array_out(MAX_IDX)
         );
@@ -188,18 +195,19 @@ begin
             operand2    => minmax_array_out(MIN_IDX),
             result      => min_cmp
         );
-    min_cmp_or_rst <= min_cmp_or_rst or reset;
-    reg_min : reg
+    min_reg_en <= (enable and min_cmp) or reset;
+        reg_min : reg
         generic map (N => 32)
         port map (
-            clk => clk, reset => reset, enable => min_cmp_or_rst,   -- Write to the max val register on a new greater val or a reset
+            clk => clk, reset => '0', enable => min_reg_en,   -- Write to the max val register on a new greater val or a reset
             D   => minmax_array_in(MIN_IDX),
             Q   => minmax_array_out(MIN_IDX)
         );
+    min_idx_reg_en <= enable and min_cmp;
     reg_min_idx : reg
         generic map (N => 3)
         port map (
-            clk => clk, reset => reset, enable => min_cmp,
+            clk => clk, reset => reset, enable => min_idx_reg_en,
             D   => idx,
             Q   => idx_array_out(MIN_IDX)
         );
