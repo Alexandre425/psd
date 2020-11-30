@@ -7,7 +7,6 @@ use work.common.all;
 entity control is
     port (
         clk :       in std_logic;
-        clk_qt :    in std_logic;   -- Quarter speed clock (control unit has to align with datapath)
         start :     in std_logic;
         reset :     in std_logic;
         enable :    out std_logic;  -- Enables the saving of new values on the datapath

@@ -15,5 +15,5 @@ end comparator;
 
 architecture behavioral of comparator is
 begin
-    result <= std_logic(unsigned(operand1) > unsigned(operand2));
+    result <= '1' when unsigned(operand1) > unsigned(operand2) else '0';
 end behavioral;

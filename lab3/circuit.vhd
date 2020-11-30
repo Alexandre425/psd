@@ -39,6 +39,7 @@ architecture Behavioral of circuit is
             clk :       in std_logic;
             start :     in std_logic;
             reset :     in std_logic;
+            enable:		out std_logic;
             buffer_fwd: out std_logic;
             addr :      out std_logic_vector (7 downto 0);
             idx:        out std_logic_vector (2 downto 0)
@@ -52,6 +53,7 @@ architecture Behavioral of circuit is
     signal enable_buff, reset_buff : std_logic;
     signal buffer_fwd : std_logic;
 
+    signal enable : std_logic;
     signal addr_in : std_logic_vector (7 downto 0); -- Address of the input memory
     signal idx :    std_logic_vector (2 downto 0);  -- Index of the matrix currently in the datapath
 
@@ -64,7 +66,7 @@ begin
             clk => clk,
             reset => reset_buff,
             enable => enable_buff,
-            a => datapath_buff(0), b => datapath_buff(1), c => datapath_buff(2), d => datapath_buff(4),
+            a => datapath_buff(0), b => datapath_buff(1), c => datapath_buff(2), d => datapath_buff(3),
             idx => idx_buff,
             min_idx_out => min_idx,
             max_idx_out => max_idx,
@@ -75,6 +77,7 @@ begin
         port map (
             clk  => clk,
             start => start,
+            enable => enable,
             reset => reset,
             buffer_fwd => buffer_fwd,
             addr => addr_in,
@@ -103,6 +106,8 @@ begin
             idx_buff <= idx;
         end if;
     end process;
+    
+    addrIn <= addr_in;
 
 
 

@@ -15,12 +15,14 @@ end reg;
 
 architecture behavioral of reg is
 begin
-    process (clk, rst)
+    process (clk, reset)
     begin
-        if reset = '1' then
-            Q <= (others => '0');
-        elsif clk'event and clk = '1' and enable = '1' then
-            Q <= D;
+        if clk'event and clk = '1' then
+            if reset = '1' then
+                Q <= (others => '0');
+            elsif enable = '1' then
+                Q <= D;
+            end if;
         end if;
     end process;
 end behavioral;
