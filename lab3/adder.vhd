@@ -8,11 +8,13 @@ entity fp_adder is
     );
     port(
         operand1, operand2 : in std_logic_vector (I+F-1 downto 0);  -- Operands
-        result : out std_logic_vector (I+F-1 downto 0)      -- Result of operation
+        result : out std_logic_vector (I+F downto 0)      -- Result of operation
     );
 end fp_adder;
 
 architecture behavioral of fp_adder is
+    signal temp : std_logic_vector (I+F-1 downto 0);
 begin
-    result <= std_logic_vector(signed(operand1) + signed(operand2));
+    temp <= std_logic_vector(signed(operand1) + signed(operand2));
+    result <= temp(I+F-1) & temp;
 end behavioral;

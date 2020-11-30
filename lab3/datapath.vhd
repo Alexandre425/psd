@@ -21,8 +21,8 @@ architecture behavioral of datapath is
     
     component comp_fp_multiplier
         port(
-            operand1_r, operand1_i, operand2_r, operand2_i : in std_logic_vector (11 downto 0);  -- Operands
-            result_r, result_i : out std_logic_vector (31 downto 0) -- Result of operation
+            operand1_r, operand1_i, operand2_r, operand2_i : in std_logic_vector (5+7-1 downto 0);  -- Operands
+            result_r, result_i : out std_logic_vector (11+14-1 downto 0) -- Result of operation
         );
     end component;
 
@@ -32,7 +32,7 @@ architecture behavioral of datapath is
         );
         port(
             operand1, operand2 : in std_logic_vector (I+F-1 downto 0);  -- Operands
-            result : out std_logic_vector (I+F-1 downto 0)      -- Result of operation
+            result : out std_logic_vector (I+F downto 0)      -- Result of operation
         );
     end component;
 
@@ -42,7 +42,7 @@ architecture behavioral of datapath is
         );
         port(
             operand1, operand2 : in std_logic_vector (I+F-1 downto 0);  -- Operands
-            result : out std_logic_vector (I+F-1 downto 0)      -- Result of operation
+            result : out std_logic_vector (I+F downto 0)      -- Result of operation
         );
     end component;
     
@@ -70,23 +70,24 @@ architecture behavioral of datapath is
     constant MIN_IDX : integer := 0;
     constant MAX_IDX : integer := 1;
 
+
+    -- Output of the complex multipliers
+    type q11_14 is array (1 downto 0) of std_logic_vector (11+14-1 downto 0);
+    type multout is array (1 downto 0) of q11_14;
+    signal mult_out : multout;
+    -- Output of the subtractors and absolute value
+    type q12_14 is array (1 downto 0) of std_logic_vector (12+14-1 downto 0);
+    signal sub_out, abs_out : q12_14;
     -- Register array for the accumulator
-    type accreg is array (1 downto 0) of std_logic_vector (31 downto 0);
-    signal accum_array_in, accum_array_out : accreg;
+    type q12_17 is array (1 downto 0) of std_logic_vector (12+17-1 downto 0);
+    signal accum_array_in, accum_array_out : q12_17;
     -- Register array for the min and max determinant values
-    type mmreg is array (1 downto 0) of std_logic_vector (31 downto 0);
-    signal minmax_array_in, minmax_array_out : mmreg;
+    type q13_14 is array (1 downto 0) of std_logic_vector (13+14-1 downto 0);
+    signal minmax_array_in, minmax_array_out : q13_14;
+    signal add_out : std_logic_vector (13+14-1 downto 0);
     -- Register array for the index of the min and max determinant matrices
     type idxreg is array (1 downto 0) of std_logic_vector (2 downto 0);
     signal idx_array_in, idx_array_out : idxreg;
-
-    -- Output of the complex multipliers, feeds the subtractors
-    type mulout is array (1 downto 0) of complex_num;
-    signal mult_out : mulout;
-    -- Output of the subtractor and the accumulator adder
-    signal sub_out, accum_out, abs_out : complex_num;
-    -- Output of the adder
-    signal add_out, new_max, new_min: std_logic_vector (31 downto 0);
     -- Result of the comparisons
     signal max_cmp, min_cmp : std_logic;
     -- To control the enable of the minmax registers
@@ -120,7 +121,7 @@ begin
     accum_gen : for I in 0 to 1 generate
         -- Accumulator registers
         reg_accum : reg
-            generic map (N => 32)
+            generic map (N => 12+17)
             port map (
                 clk => clk, reset => reset, enable => enable,
                 D   => accum_array_in(I),
@@ -128,15 +129,17 @@ begin
             );
         -- The accumulator adders
         accum : fp_adder
-            generic map (I => 14, F => 18)
+            generic map (I => 11, F => 17)
             port map (
-                operand1    => sub_out(I),
-                operand2    => accum_array_out(I),
+                operand1 (11+17-1) => sub_out(I)(25),   -- Extend the signal bit
+                operand1 (11+17-2) => sub_out(I)(25),
+                operand1 (9+17-1 downto 0) => sub_out(I),
+                operand2    => accum_array_out(I) (11+17-1 downto 0),   -- Last bit is discarded, shouldn't matter
                 result      => accum_array_in(I)
             );
         -- The subtractor (performs a*d - b*c)
         sub : fp_subtractor
-            generic map (I => 14, F => 18)
+            generic map (I => 11, F => 14)
             port map (
                 operand1    => mult_out(0)(I),  -- ad   NOTE:   I = 0 makes the real subtractor
                 operand2    => mult_out(1)(I),  -- bc           I = 1 makes imaginary subtractor
@@ -144,13 +147,13 @@ begin
             );
         -- Taking the absolute value of the determinant (of the real and imaginary parts)
         abs_out(I) <= std_logic_vector(abs(signed(sub_out(I))));
-        -- Outputting the average (accumulator divided by 8 / shifted by 3)
-        avg_det(I) <= std_logic_vector(shift_right(signed(accum_array_out(I)),3));
+        -- Outputting the average in Q14.18 format
+        avg_det(I) <= accum_array_out(I)(28) & accum_array_out(I)(28) & accum_array_out(I) & '0';
     end generate accum_gen;
 
     -- The abs value adder
     accum : fp_adder
-        generic map (I => 14, F => 18)
+        generic map (I => 12, F => 14)
         port map (
             operand1    => abs_out(0),
             operand2    => abs_out(1),
@@ -159,7 +162,7 @@ begin
 
     -- The val > max branch
     comp_max : comparator
-        generic map (N => 32)
+        generic map (N => 13+14)
         port map (
             operand1    => add_out,
             operand2    => minmax_array_out(MAX_IDX),
@@ -170,7 +173,7 @@ begin
     --  the minimum and max values possible, not 0. So the reset bit instead enables them,
     --  and selects 0 or +inf on their input.
     reg_max : reg
-        generic map (N => 32)
+        generic map (N => 13+14)
         port map (
             clk => clk, reset => '0', enable => max_reg_en,   -- Write to the max val register on a new greater val or a reset
             D   => minmax_array_in(MAX_IDX),
@@ -186,18 +189,18 @@ begin
         );
     with reset select minmax_array_in(MAX_IDX) <=
         add_out                     when '0',       -- When not resetting, store the new value (if the register is enabled)
-        x"00000000"                 when others;    -- When resetting, store 0 (the minimum value)
+        (others => '0')             when others;    -- When resetting, store 0 (the minimum value)
     -- The val < min branch
     comp_min : comparator
-        generic map (N => 32)
+        generic map (N => 13+14)
         port map (
-            operand1    => add_out,
-            operand2    => minmax_array_out(MIN_IDX),
+            operand1    => minmax_array_out(MIN_IDX),
+            operand2    => add_out,
             result      => min_cmp
         );
     min_reg_en <= (enable and min_cmp) or reset;
         reg_min : reg
-        generic map (N => 32)
+        generic map (N => 13+14)
         port map (
             clk => clk, reset => '0', enable => min_reg_en,   -- Write to the max val register on a new greater val or a reset
             D   => minmax_array_in(MIN_IDX),
@@ -213,6 +216,6 @@ begin
         );
     with reset select minmax_array_in(MIN_IDX) <=
         add_out                     when '0',
-        x"FFFFFFFF"                 when others;    -- When resetting, store +inf
+        (others => '1')             when others;    -- When resetting, store +inf
     
 end architecture behavioral;
