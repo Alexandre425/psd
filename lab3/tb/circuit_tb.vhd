@@ -74,13 +74,13 @@ begin
         wait for 50ns;
         start <= '0';
         wait for clk_period;
-        dataIn <= x"aaaaaaaa";
+        dataIn <= x"a8fe00f2";
         wait for clk_period;
-        dataIn <= x"bbbbbbbb";
+        dataIn <= x"bf74052a";
         wait for clk_period;
-        dataIn <= x"cccccccc";
+        dataIn <= x"c33802e4";
         wait for clk_period;
-        dataIn <= x"dddddddd";
+        dataIn <= x"d0420564";
         wait;
     end process;
 
