@@ -65,13 +65,13 @@ begin  -- architecture test
 
 
     -- insert stimulus here
-    btn(3) <= '1' after 1 us,          -- reset btnD
-              '0' after 1.7 us;
+    btn(3) <= '1' after 400 ns,          -- reset btnD
+              '0' after 500 ns;
     --'1' after 50 ms,
     --'0' after 52 ms;
 
-    btn(2) <= '1' after 3 us,          -- start working btnR
-              '0' after 3.7 us;
+    btn(2) <= '1' after 600 ns,          -- start working btnR
+              '0' after 700 ns;
     --'1' after 80 ms,
     --'0' after 81 ms;
 

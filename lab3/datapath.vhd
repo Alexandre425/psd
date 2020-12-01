@@ -11,6 +11,7 @@ entity datapath is
         enable :        in std_logic;   -- Enables saving new values to the registers
         a, b, c, d :    in std_logic_vector (31 downto 0);  -- Matrix values
         idx:            in std_logic_vector (2 downto 0);
+        det :           out complex_num;
         min_idx_out :   out std_logic_vector (2 downto 0);  -- Index of the matrix with the smallest determinant
         max_idx_out :	out std_logic_vector (2 downto 0);  -- With the largest
         avg_det :       out complex_num                     -- Average of the determinant
@@ -149,6 +150,8 @@ begin
         abs_out(I) <= std_logic_vector(abs(signed(sub_out(I))));
         -- Outputting the average in Q14.18 format
         avg_det(I) <= accum_array_out(I)(28) & accum_array_out(I)(28) & accum_array_out(I) & '0';
+        -- Outputting the determinant in Q14.18 format
+        det(I) <= sub_out(I)(25) & sub_out(I)(25) & sub_out(I) & "0000";
     end generate accum_gen;
 
     -- The abs value adder

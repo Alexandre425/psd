@@ -2,6 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.std_logic_unsigned.all;
 use IEEE.std_logic_misc.all;
+use work.common.all;
 
 entity top_circuit is
     port (
@@ -44,11 +45,11 @@ architecture Behavioral of top_circuit is
         port (
             clk        : in  std_logic;
             clk_qt     : in  std_logic;
-            rst        : in  std_logic;
+            reset      : in  std_logic;
             start      : in  std_logic;
             dataIn     : in  std_logic_vector (31 downto 0);
             addrIn     : out std_logic_vector (7 downto 0);
-            dataOut    : out std_logic_vector (31 downto 0);
+            dataOut    : out complex_num;
             addrOut    : out std_logic_vector (7 downto 0);
             weOut      : out std_logic;
             statusLeds : out std_logic_vector (15 downto 0));
@@ -90,8 +91,8 @@ architecture Behavioral of top_circuit is
     
     component clk_wiz_0
         port (
-            clk_out1, clk_out2, locked : out std_logic;
-            clk_in1 : in std_logic
+            clk_out1, clk_out2, clk_out3, locked : out std_logic;
+            clk_in1, reset: in std_logic
         );
     end component;
 
@@ -107,7 +108,7 @@ architecture Behavioral of top_circuit is
     signal addrIn : std_logic_vector(7 downto 0);
 
 -- memOut signals
-    signal dataOut : std_logic_vector(31 downto 0);
+    signal dataOut : complex_num;
     signal addrOut : std_logic_vector(7 downto 0);
     signal weOut   : std_logic;
 
@@ -127,7 +128,7 @@ architecture Behavioral of top_circuit is
     signal btnDeBnc : std_logic_vector(4 downto 0);
     
     -- Regular clock
-    signal clk_in1, clk_out1, clk_out2 : std_logic;
+    signal clk_in1, clk_out1, clk_out2, clk_out3 : std_logic;
 
 
 begin
@@ -161,6 +162,8 @@ begin
             clk_in1 => CLK,
             clk_out1 => clk_out1,
             clk_out2 => clk_out2,
+            clk_out3 => clk_out3,
+            reset => '0',
             locked => open
         );
 
@@ -178,21 +181,21 @@ begin
     -- Output memory
     MemOuT_1 : MemOuT
         port map (
-            DataWRA => dataOut,
+            DataWRA => dataOut(0),
             AddrWRA => addrOut,
-            clkWRA  => clk_out2,
+            clkWRA  => clk_out2,    -- Twice as fast as the datapath, to store two values
             WeWRA   => weOut,
             DataRDB => dataSend,
             AddrRDB => readAddr,
-            clkRDB  => CLK);
+            clkRDB  => clk_out1);
 
 
     -- developed circuit to implement an algorithm
     circuit_1 : circuit
         port map (
             clk        => clk_out1,
-            clk_qt     => clk_out2,
-            rst        => btnReset,
+            clk_qt     => clk_out3,
+            reset      => btnReset,
             start      => btnStart,
             dataIn     => dataIn,
             addrIn     => addrIn,

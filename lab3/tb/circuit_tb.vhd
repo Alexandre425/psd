@@ -14,7 +14,7 @@ architecture Behavioral of circuit_tb is
             start      : in  std_logic;
             dataIn     : in  std_logic_vector (31 downto 0);
             addrIn     : out std_logic_vector (7 downto 0);
-            dataOut    : out std_logic_vector (31 downto 0);
+            dataOut    : out complex_num;
             addrOut    : out std_logic_vector (7 downto 0);
             weOut      : out std_logic;
             statusLeds : out std_logic_vector (15 downto 0)
@@ -27,7 +27,7 @@ architecture Behavioral of circuit_tb is
     signal start :  std_logic;
     signal dataIn : std_logic_vector (31 downto 0);
     signal addrIn : std_logic_vector (7 downto 0); 
-    signal dataOut :std_logic_vector (31 downto 0);
+    signal dataOut :complex_num;
     signal addrOut :std_logic_vector (7 downto 0);
     signal weOut :  std_logic;
     signal statusLeds : std_logic_vector (15 downto 0);

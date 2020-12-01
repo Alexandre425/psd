@@ -12,7 +12,7 @@ entity circuit is
         start      : in  std_logic;                         -- btnR
         dataIn     : in  std_logic_vector (31 downto 0);
         addrIn     : out std_logic_vector (7 downto 0);
-        dataOut    : out std_logic_vector (31 downto 0);
+        dataOut    : out complex_num;
         addrOut    : out std_logic_vector (7 downto 0);
         weOut      : out std_logic;
         statusLeds : out std_logic_vector (15 downto 0)     -- leds
@@ -28,6 +28,7 @@ architecture Behavioral of circuit is
             enable :        in std_logic;
             a, b, c, d :    in std_logic_vector (31 downto 0);
             idx:            in std_logic_vector (2 downto 0);
+            det :           out complex_num;
             min_idx_out :	out std_logic_vector (2 downto 0);
             max_idx_out :	out std_logic_vector (2 downto 0);
             avg_det :       out complex_num
@@ -68,10 +69,33 @@ begin
             enable => enable_buff,
             a => datapath_buff(0), b => datapath_buff(1), c => datapath_buff(2), d => datapath_buff(3),
             idx => idx_buff,
+            det => dataOut,
             min_idx_out => min_idx,
             max_idx_out => max_idx,
             avg_det => avg_det
         );
+
+    -- Put the index of the min and max registers on the LEDs
+    -- This is probably the worst way ever of doing this, I hope the compiler fixes it
+    -- I can't figure out how to encode it in one hot lol
+    with min_idx select statusLeds (15 downto 8) <=
+        "00000001" when "000",
+        "00000010" when "001",
+        "00000100" when "010",
+        "00001000" when "011",
+        "00010000" when "100",
+        "00100000" when "101",
+        "01000000" when "110",
+        "10000000" when others;
+    with max_idx select statusLeds (7 downto 0) <=
+        "00000001" when "000",
+        "00000010" when "001",
+        "00000100" when "010",
+        "00001000" when "011",
+        "00010000" when "100",
+        "00100000" when "101",
+        "01000000" when "110",
+        "10000000" when others;
     
     ctrl : control
         port map (
@@ -107,6 +131,8 @@ begin
         end if;
     end process;
     
+    -- Write to the buffered 
+    addrOut <= "00000" & idx_buff;
     addrIn <= addr_in;
 
 
