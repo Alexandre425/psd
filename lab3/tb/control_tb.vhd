@@ -9,7 +9,6 @@ architecture Behavioral of control_tb is
     component control
         port (
             clk :       in std_logic;
-            clk_qt :    in std_logic;   -- Quarter speed clock (control unit has to align with datapath)
             start :     in std_logic;
             reset :     in std_logic;
             enable :    out std_logic;  -- Enables the saving of new values on the datapath
@@ -20,7 +19,6 @@ architecture Behavioral of control_tb is
     end component;
         
     signal clk : std_logic;
-    signal clk_qt : std_logic;
     signal start : std_logic;
     signal reset : std_logic;
     signal enable : std_logic;
@@ -33,7 +31,6 @@ begin
 
     uut: control port map(
         clk => clk,
-        clk_qt => clk_qt,
         start => start,
         reset => reset,
         enable => enable,
@@ -49,14 +46,6 @@ begin
         clk <= '1';
         WAIT FOR clk_period/2;
     END PROCESS;
-
-    clk_qt_process : process
-    begin
-        clk_qt <='0';
-        wait for clk_period*2;
-        clk_qt <='1';
-        wait for clk_period*2;
-    end process;
 
     stim_proc : process
     begin

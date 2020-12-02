@@ -40,12 +40,12 @@ begin
                 idx_counter     <= "000";   -- Reset the counters
                 addr_counter    <= "00000000";
             else 
-            	if state = S_LOAD_A then               	-- When loading A from the next matrix
-                	idx_counter <= idx_counter + 1;         -- Increment the matrix count
-               	end if;
             	if state /= S_WAIT and state /= S_WAIT_RELEASE then	-- When loading any value
                 	addr_counter <= addr_counter + 1;       -- Increment the adress
                 end if;
+            	if state = S_LOAD_A then               	-- When loading A from the next matrix
+                	idx_counter <= idx_counter + 1;         -- Increment the matrix count
+               	end if;
             end if;
         end if;
 	end process;
@@ -100,7 +100,7 @@ begin
                 enable      <= '0';
                 buffer_fwd  <= '0';   
             when S_FIRST_LOAD_A =>
-                enable      <= '0';
+                enable      <= '1';
                 buffer_fwd  <= '0';
             when S_LOAD_A =>
                 enable      <= '1';

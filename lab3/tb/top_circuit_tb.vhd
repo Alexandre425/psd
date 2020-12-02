@@ -58,26 +58,27 @@ begin  -- architecture test
   -- Stimulus process
   stim_proc : process
   begin
-    -- hold reset state for 100 ns.
+
+    wait for 500 ns;
+
+    -- Reset
+    btn(3) <= '1';
+    wait for 500 ns;
+    btn(3) <= '0';
+    wait for 500 ns;
+    -- Start
+    btn(2) <= '1';
+    wait for 500 ns;
+    btn(2) <= '0';
+    wait for 500 ns;
+
+    wait for 2 ms;
+
+    -- Transfer
+    btn(0) <= '1';
     wait for 100 ns;
-
-    wait for clk_period*10;
-
-
-    -- insert stimulus here
-    btn(3) <= '1' after 400 ns,          -- reset btnD
-              '0' after 500 ns;
-    --'1' after 50 ms,
-    --'0' after 52 ms;
-
-    btn(2) <= '1' after 600 ns,          -- start working btnR
-              '0' after 700 ns;
-    --'1' after 80 ms,
-    --'0' after 81 ms;
-
-    btn(0) <= '1' after 2.0010 ms,          -- load from mem btnU
-              '0' after 2.0017 ms;
-
+    btn(0) <= '0';
+    wait for 100 ns;
 
     wait;
   end process;
