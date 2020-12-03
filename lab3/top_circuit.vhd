@@ -44,12 +44,13 @@ architecture Behavioral of top_circuit is
     component circuit is
         port (
             clk        : in  std_logic;
+            clk_hl     : in  std_logic;
             clk_qt     : in  std_logic;
             reset      : in  std_logic;
             start      : in  std_logic;
             dataIn     : in  std_logic_vector (31 downto 0);
             addrIn     : out std_logic_vector (7 downto 0);
-            dataOut    : out complex_num;
+            dataOut    : out std_logic_vector (31 downto 0);
             addrOut    : out std_logic_vector (7 downto 0);
             weOut      : out std_logic;
             statusLeds : out std_logic_vector (15 downto 0));
@@ -108,7 +109,7 @@ architecture Behavioral of top_circuit is
     signal addrIn : std_logic_vector(7 downto 0);
 
 -- memOut signals
-    signal dataOut : complex_num;
+    signal dataOut : std_logic_vector (31 downto 0);
     signal addrOut : std_logic_vector(7 downto 0);
     signal weOut   : std_logic;
 
@@ -127,9 +128,8 @@ architecture Behavioral of top_circuit is
 --from being interpreted as multiple button presses.
     signal btnDeBnc : std_logic_vector(4 downto 0);
     
-    -- Regular clock
+    -- In and output clocks
     signal clk_in1, clk_out1, clk_out2, clk_out3 : std_logic;
-
 
 begin
     -- Signal renaming
@@ -181,7 +181,7 @@ begin
     -- Output memory
     MemOuT_1 : MemOuT
         port map (
-            DataWRA => dataOut(0),
+            DataWRA => dataOut,
             AddrWRA => addrOut,
             clkWRA  => clk_out2,    -- Twice as fast as the datapath, to store two values
             WeWRA   => weOut,
@@ -194,6 +194,7 @@ begin
     circuit_1 : circuit
         port map (
             clk        => clk_out1,
+            clk_hl     => clk_out2,
             clk_qt     => clk_out3,
             reset      => btnReset,
             start      => btnStart,
