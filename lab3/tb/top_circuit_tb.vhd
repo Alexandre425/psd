@@ -30,7 +30,7 @@ architecture test of top_circuit_tb is
   signal UART_TXD : std_logic;
 
   -- Clock period definitions
-  constant clk_period : time := 10 ns;
+  constant clk_period : time := 6 ns;
 
 
 begin  -- architecture test

@@ -25,6 +25,8 @@ clean:
 cleandata:
 	rm *.dat *.itr *.out
 
+sd765.dat sd765.itr: adet.exe
+	adet.exe 765 sd765
 
 zip: README.pdf Makefile adet.c adet adet.exe hexdump.exe sd765.dat sd765.itr
 

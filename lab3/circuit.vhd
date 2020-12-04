@@ -68,9 +68,9 @@ begin
 
     dp : datapath
         port map (
-            clk => clk,             -- The connection between the buffer and the inputs seems out of sync, but
+            clk => clk_qt,          -- The connection between the buffer and the inputs seems out of sync, but
             reset => reset_buff,    --  it is necessary as the address being output by the control unit is
-            enable => enable_buff2,  --  the address of the thing that is going to be loaded plus one
+            enable => enable_buff2, --  the address of the thing that is going to be loaded plus one
             a => datapath_buff(1), b => datapath_buff(2), c => datapath_buff(3), d => datapath_buff(0),
             idx => idx_buff2,
             det => det,
@@ -83,24 +83,24 @@ begin
     -- This is probably the worst way ever of doing this, I hope the compiler fixes it
     -- I can't figure out how to encode it in one hot lol
     with min_idx select statusLeds (15 downto 8) <=
-        "00000001" when "000",
-        "00000010" when "001",
-        "00000100" when "010",
-        "00001000" when "011",
-        "00010000" when "100",
-        "00100000" when "101",
-        "01000000" when "110",
-        "10000000" when others;
+        "10000000" when "000",
+        "01000000" when "001",
+        "00100000" when "010",
+        "00010000" when "011",
+        "00001000" when "100",
+        "00000100" when "101",
+        "00000010" when "110",
+        "00000001" when others;
     with max_idx select statusLeds (7 downto 0) <=
-        "00000001" when "000",
-        "00000010" when "001",
-        "00000100" when "010",
-        "00001000" when "011",
-        "00010000" when "100",
-        "00100000" when "101",
-        "01000000" when "110",
-        "10000000" when others;
-    
+        "10000000" when "000",
+        "01000000" when "001",
+        "00100000" when "010",
+        "00010000" when "011",
+        "00001000" when "100",
+        "00000100" when "101",
+        "00000010" when "110",
+        "00000001" when others;
+        
     ctrl : control
         port map (
             clk  => clk,

@@ -86,9 +86,6 @@ architecture behavioral of datapath is
     type q13_14 is array (1 downto 0) of std_logic_vector (13+14-1 downto 0);
     signal minmax_array_in, minmax_array_out : q13_14;
     signal add_out : std_logic_vector (13+14-1 downto 0);
-    -- Register array for the index of the min and max determinant matrices
-    type idxreg is array (1 downto 0) of std_logic_vector (2 downto 0);
-    signal idx_array_in, idx_array_out : idxreg;
     -- Result of the comparisons
     signal max_cmp, min_cmp : std_logic;
     -- To control the enable of the minmax registers
@@ -188,7 +185,7 @@ begin
         port map (
             clk => clk, reset => reset, enable => max_idx_reg_en,
             D   => idx,
-            Q   => idx_array_out(MAX_IDX)
+            Q   => max_idx_out
         );
     with reset select minmax_array_in(MAX_IDX) <=
         add_out                     when '0',       -- When not resetting, store the new value (if the register is enabled)
@@ -215,7 +212,7 @@ begin
         port map (
             clk => clk, reset => reset, enable => min_idx_reg_en,
             D   => idx,
-            Q   => idx_array_out(MIN_IDX)
+            Q   => min_idx_out
         );
     with reset select minmax_array_in(MIN_IDX) <=
         add_out                     when '0',

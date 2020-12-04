@@ -1,7 +1,7 @@
 /*******************************************************************
  * Copyright (C) 2013-2020 by Paulo Flores <pff@inesc-id.pt>
  *
- * Time-stamp: "2020-11-24 01:20:51    adet.c    pff@inesc-id.pt
+ * Time-stamp: "2020-12-02 00:01:13    adet.c    pff@inesc-id.pt
  *
  * Summary: Generate parameters and compare with expected results
  *          from the FPGA.
@@ -15,7 +15,7 @@
 
 #define COURSE "Digital System Design (2020/21, 1o Sem.) - Prof. Paulo Flores"
 #define NAME "ADET - matrices generation, and FPGA output verification"
-#define VERSION "1.2"
+#define VERSION "1.3"
 
 #define DEBUG 1
 
@@ -733,7 +733,7 @@ void compute_values ()
   maxMat = 0;
   minMat = 0;
   maxDet = 0x80000000; 		/*for 32bits = -1x2^31 */
-  maxDet = 0x1FFFFFFF;		/*for 32bits = 1x2^31 -1*/
+  minDet = 0x1FFFFFFF;		/*for 32bits = 1x2^31 -1*/
   sumDetR = 0;
   sumDetI = 0;
 
