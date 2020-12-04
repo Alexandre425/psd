@@ -8,7 +8,7 @@
 #Bank = 34, Pin name = ,  Sch name = CLK100MHZ
 set_property PACKAGE_PIN W5 [get_ports CLK]
 set_property IOSTANDARD LVCMOS33 [get_ports CLK]
-create_clock -period 6.000 -name sys_clk_pin -waveform {0.000 3.000} -add [get_ports CLK]
+create_clock -period 10.0 -name sys_clk_pin -waveform {0.000 5.000} -add [get_ports CLK]
 
 ## Constraints on INPUTS and OUTPUTS ports
 set_input_delay  -clock [get_clocks *] 0.000 [get_ports * -filter { NAME !~ "CLK" && DIRECTION == "IN" }]

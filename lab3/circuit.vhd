@@ -54,8 +54,8 @@ architecture Behavioral of circuit is
     signal buff1, buff2, datapath_buff : buff;
     signal avg_det_buff : complex_num;
     signal idx_buff1, idx_buff2 : std_logic_vector (2 downto 0);
-    signal enable_buff1, enable_buff2, reset_buff : std_logic;
-    signal write_avg_buff1, write_avg_buff2 : std_logic;
+    signal enable_buff1, enable_buff2, enable_buff3, reset_buff : std_logic;
+    signal write_avg_buff1, write_avg_buff2, write_avg_buff3 : std_logic;
     signal buffer_fwd : std_logic;
 
     signal enable, write_avg: std_logic;
@@ -125,8 +125,8 @@ begin
         if clk'event and clk = '1' then
             buff1(to_integer(unsigned(addr_in(1 downto 0)))) <= dataIn;
             if buffer_fwd = '1' then    -- If signalled to forward the buffer
-                idx_buff1 <= idx;
                 buff2 <= buff1;         -- Pass the vals in buffer 1 to buffer 2
+                idx_buff1 <= idx;
             end if;
         end if;
     end process;
@@ -137,8 +137,10 @@ begin
             datapath_buff <= buff2;
             enable_buff1 <= enable;
             enable_buff2 <= enable_buff1;
+            enable_buff3 <= enable_buff2;
             write_avg_buff1 <= write_avg;
             write_avg_buff2 <= write_avg_buff1;
+            write_avg_buff3 <= write_avg_buff2;
             reset_buff <= reset;
             idx_buff2 <= idx_buff1;
             avg_det_buff <= avg_det;
@@ -158,11 +160,11 @@ begin
 
     -- Write them to different positions of memory
     -- Equivalent to multiplying by 2 and adding 1 for I, 0 for R
-    with write_avg_buff2 select addrOut <=
+    with write_avg_buff3 select addrOut <=
         "0000" & idx_buff2 & out_addr_counter when '0',
         "0001000" & out_addr_counter when others;
     -- Alternate sending the R or I parts of the determinant every 2 cycles
-    with write_avg_buff2 select mem_val <=
+    with write_avg_buff3 select mem_val <=
         det when '0',
         avg_det_buff when others;
     with out_addr_counter select dataOut <= -- I dunno how to do this conversion
@@ -170,7 +172,7 @@ begin
         mem_val(1) when others;
 
     addrIn <= addr_in;
-    weOut <= enable_buff2;
+    weOut <= enable_buff3;
 
 
 

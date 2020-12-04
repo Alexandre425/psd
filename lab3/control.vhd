@@ -27,14 +27,13 @@ architecture behavioral of control is
         S_LOAD_B,       -- Load B, so on...
         S_LOAD_C,
         S_LOAD_D,
-        S_LAST,         -- Forwards the buffer for the last time
-        S_WAIT_UNTIL,   -- Waits for 4 cycles
-        S_WRITE_AVG     -- Writes the average to memory
+        S_LAST,         -- Forwards the buffer for the last time and sets up the flag to save the average
+        S_WRITE_AVG
     );
     signal state : fsm_states;
     signal idx_counter :    unsigned (2 downto 0);  -- Counts matrices 
     signal addr_counter :   unsigned (7 downto 0);  -- Counts memory addresses
-    signal sync_counter :   unsigned (1 downto 0);  -- To help keep the control unit in sync with the quarter speed clock
+    signal avg_counter :    unsigned (1 downto 0);  -- Counts 4 cycles to hold the write_avg signal high
     
 begin
 
@@ -44,9 +43,10 @@ begin
             if reset = '1' then           	-- On a reset
                 idx_counter     <= "000";   -- Reset the counters
                 addr_counter    <= "00000000";
+                avg_counter     <= "00";
             else 
-                if state = S_LAST then
-                    addr_counter <= x"00";              -- Reset for use with WAIT_UNTIL
+                if state = S_WRITE_AVG then
+                    avg_counter <= avg_counter + 1;
                 elsif state = S_LOAD_A then             -- When loading A from the next matrix
                 	addr_counter <= addr_counter + 1;   -- Increment the adress
                     idx_counter <= idx_counter + 1;     -- Increment the matrix count
@@ -71,10 +71,14 @@ begin
                     when S_WAIT =>
                         if start = '1' then
                             state <= S_WAIT_RELEASE;
+                        else 
+                            state <= S_WAIT;
                         end if;
                     when S_WAIT_RELEASE =>
                         if start = '0' then
                             state <= S_INC_ADDR;
+                        else
+                            state <= S_WAIT_RELEASE;
                         end if;
                     when S_INC_ADDR =>
                         state <= S_FIRST_LOAD_A;
@@ -93,15 +97,13 @@ begin
                             state <= S_LOAD_A;      -- Load the next matrix
                         end if;
                     when S_LAST =>
-                        state <= S_WAIT_UNTIL;
-                    when S_WAIT_UNTIL =>
-                        if addr_counter = x"04" then
-                            state <= S_WRITE_AVG;
-                        else
-                            state <= S_WAIT_UNTIL;
-                        end if;
+                        state <= S_WRITE_AVG;
                     when S_WRITE_AVG =>
-                        state <= S_WAIT;
+                        if avg_counter = "11" then
+                            state <= S_WAIT;
+                        else 
+                            state <= S_WRITE_AVG;
+                        end if;
                     when others =>
                         state <= S_WAIT;
                 end case;
@@ -148,17 +150,14 @@ begin
                 enable      <= '1';
                 buffer_fwd  <= '1';
                 write_avg   <= '0';
-            when S_WAIT_UNTIL =>
-                enable      <= '1';
-                buffer_fwd  <= '0';
-                write_avg   <= '0';
             when S_WRITE_AVG =>
                 enable      <= '1';
-                buffer_fwd  <= '1';
+                buffer_fwd  <= '0';
                 write_avg   <= '1';
             when others =>
                 enable      <= '0';
                 buffer_fwd  <= '0';
+                write_avg   <= '0';
         end case;
     end process;
 
