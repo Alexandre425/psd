@@ -41,6 +41,7 @@ architecture Behavioral of circuit is
             clk :       in std_logic;
             start :     in std_logic;
             reset :     in std_logic;
+            write_avg : out std_logic;
             enable:		out std_logic;
             buffer_fwd: out std_logic;
             addr :      out std_logic_vector (7 downto 0);
@@ -51,17 +52,20 @@ architecture Behavioral of circuit is
     -- Buffers for the datapath
     type buff is array (3 downto 0) of std_logic_vector(31 downto 0);
     signal buff1, buff2, datapath_buff : buff;
+    signal avg_det_buff : complex_num;
     signal idx_buff1, idx_buff2 : std_logic_vector (2 downto 0);
     signal enable_buff1, enable_buff2, reset_buff : std_logic;
+    signal write_avg_buff1, write_avg_buff2 : std_logic;
     signal buffer_fwd : std_logic;
 
-    signal enable : std_logic;
+    signal enable, write_avg: std_logic;
     signal addr_in : std_logic_vector (7 downto 0); -- Address of the input memory
     signal idx :    std_logic_vector (2 downto 0);  -- Index of the matrix currently in the datapath
 
     signal max_idx, min_idx : std_logic_vector (2 downto 0);    -- Min and max determinant indexes
     signal det      : complex_num;  -- Determinant
     signal avg_det  : complex_num;  -- Average determinant
+    signal mem_val  : complex_num;  -- Which of the above two to write to memory
 
     signal out_addr_counter : std_logic;    -- Manages which value (R or I) gets sent out
 begin
@@ -106,6 +110,7 @@ begin
             clk  => clk,
             start => start,
             enable => enable,
+            write_avg => write_avg,
             reset => reset,
             buffer_fwd => buffer_fwd,
             addr => addr_in,
@@ -132,8 +137,11 @@ begin
             datapath_buff <= buff2;
             enable_buff1 <= enable;
             enable_buff2 <= enable_buff1;
+            write_avg_buff1 <= write_avg;
+            write_avg_buff2 <= write_avg_buff1;
             reset_buff <= reset;
             idx_buff2 <= idx_buff1;
+            avg_det_buff <= avg_det;
         end if;
     end process;
     
@@ -148,16 +156,20 @@ begin
         end if;
     end process;
 
-    -- Alternate sending the R or I parts of the determinant every 2 cycles
-    with out_addr_counter select dataOut <= -- I dunno how to do this conversion
-        det(0) when '0',
-        det(1) when others;
     -- Write them to different positions of memory
     -- Equivalent to multiplying by 2 and adding 1 for I, 0 for R
-    addrOut <= "0000" & idx_buff2 & out_addr_counter;
+    with write_avg_buff2 select addrOut <=
+        "0000" & idx_buff2 & out_addr_counter when '0',
+        "0001000" & out_addr_counter when others;
+    -- Alternate sending the R or I parts of the determinant every 2 cycles
+    with write_avg_buff2 select mem_val <=
+        det when '0',
+        avg_det_buff when others;
+    with out_addr_counter select dataOut <= -- I dunno how to do this conversion
+        mem_val(0) when '0',
+        mem_val(1) when others;
 
     addrIn <= addr_in;
-
     weOut <= enable_buff2;
 
 

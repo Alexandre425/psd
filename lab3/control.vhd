@@ -9,6 +9,7 @@ entity control is
         clk :       in std_logic;
         start :     in std_logic;
         reset :     in std_logic;
+        write_avg : out std_logic;
         enable :    out std_logic;  -- Enables the saving of new values on the datapath
         buffer_fwd: out std_logic;  -- Forward the data from the buffer to the datapath
         addr :      out std_logic_vector (7 downto 0);  -- Memory address
@@ -26,7 +27,9 @@ architecture behavioral of control is
         S_LOAD_B,       -- Load B, so on...
         S_LOAD_C,
         S_LOAD_D,
-        S_LAST          -- Forwards the buffer for the last time
+        S_LAST,         -- Forwards the buffer for the last time
+        S_WAIT_UNTIL,   -- Waits for 4 cycles
+        S_WRITE_AVG     -- Writes the average to memory
     );
     signal state : fsm_states;
     signal idx_counter :    unsigned (2 downto 0);  -- Counts matrices 
@@ -42,11 +45,13 @@ begin
                 idx_counter     <= "000";   -- Reset the counters
                 addr_counter    <= "00000000";
             else 
-                if state = S_LOAD_A then               	-- When loading A from the next matrix
+                if state = S_LAST then
+                    addr_counter <= x"00";              -- Reset for use with WAIT_UNTIL
+                elsif state = S_LOAD_A then             -- When loading A from the next matrix
                 	addr_counter <= addr_counter + 1;   -- Increment the adress
                     idx_counter <= idx_counter + 1;     -- Increment the matrix count
             	elsif state /= S_WAIT and state /= S_WAIT_RELEASE then  -- When loading any value
-                	addr_counter <= addr_counter + 1;       -- Increment the adress
+                	addr_counter <= addr_counter + 1;   -- Increment the adress
                 end if;
             end if;
         end if;
@@ -88,6 +93,14 @@ begin
                             state <= S_LOAD_A;      -- Load the next matrix
                         end if;
                     when S_LAST =>
+                        state <= S_WAIT_UNTIL;
+                    when S_WAIT_UNTIL =>
+                        if addr_counter = x"04" then
+                            state <= S_WRITE_AVG;
+                        else
+                            state <= S_WAIT_UNTIL;
+                        end if;
+                    when S_WRITE_AVG =>
                         state <= S_WAIT;
                     when others =>
                         state <= S_WAIT;
@@ -102,30 +115,47 @@ begin
             when S_WAIT =>
                 enable      <= '0';     -- Don't write new values to the datapath registers
                 buffer_fwd  <= '0';     -- Don't forward the first buffer
+                write_avg   <= '0';     -- Don't write the average
             when S_WAIT_RELEASE =>
                 enable      <= '0';
                 buffer_fwd  <= '0';   
+                write_avg   <= '0';
             when S_INC_ADDR =>
                 enable      <= '0';
                 buffer_fwd  <= '0';
+                write_avg   <= '0';
             when S_FIRST_LOAD_A =>
                 enable      <= '0';
                 buffer_fwd  <= '0';
+                write_avg   <= '0';
             when S_LOAD_A =>
                 enable      <= '1';
                 buffer_fwd  <= '1';
+                write_avg   <= '0';
             when S_LOAD_B =>
                 enable      <= '1';
                 buffer_fwd  <= '0';
-            when S_LOAD_C =>
+                write_avg   <= '0';
+            when S_LOAD_C =>    
                 enable      <= '1';
                 buffer_fwd  <= '0';
+                write_avg   <= '0';
             when S_LOAD_D =>
                 enable      <= '1';
                 buffer_fwd  <= '0';
+                write_avg   <= '0';
             when S_LAST =>
                 enable      <= '1';
                 buffer_fwd  <= '1';
+                write_avg   <= '0';
+            when S_WAIT_UNTIL =>
+                enable      <= '1';
+                buffer_fwd  <= '0';
+                write_avg   <= '0';
+            when S_WRITE_AVG =>
+                enable      <= '1';
+                buffer_fwd  <= '1';
+                write_avg   <= '1';
             when others =>
                 enable      <= '0';
                 buffer_fwd  <= '0';
